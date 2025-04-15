@@ -165,8 +165,52 @@
       color: #000;
     }
   </style>
+  <script>
+    // Fix JavaScript block to avoid stray curly brace and add proper loading
+    function autofillLocation(prefix) {
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById(`${prefix}-address`).value = data.address.road || '';
+            document.getElementById(`${prefix}-city`).value = data.address.city || data.address.town || '';
+            document.getElementById(`${prefix}-state`).value = data.address.state || '';
+            document.getElementById(`${prefix}-zip`).value = data.address.postcode || '';
+          });
+      });
+    }
+
+    function addressSuggestions(inputId, cityId, stateId, zipId) {
+      const input = document.getElementById(inputId);
+      input.addEventListener('input', async () => {
+        const value = input.value;
+        if (value.length < 3) return;
+        try {
+          const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(value)}&apiKey=2352658152154752af3fb89c105d8a1c`);
+          const results = await response.json();
+          console.log(results);
+          if (results.features && results.features.length > 0) {
+            const props = results.features[0].properties;
+            document.getElementById(cityId).value = props.city || '';
+            document.getElementById(stateId).value = props.state || '';
+            document.getElementById(zipId).value = props.postcode || '';
+          }
+        } catch (err) {
+          console.error('Geoapify API error:', err);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      addressSuggestions('start-address', 'start-city', 'start-state', 'start-zip');
+      addressSuggestions('destination-address', 'destination-city', 'destination-state', 'destination-zip');
+    });
+  </script>
 </head>
 <body>
-<!-- Your page content continues here... -->
+  <!-- Page content continues here... -->
 </body>
 </html>
