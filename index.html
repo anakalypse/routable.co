@@ -217,7 +217,29 @@
     <h2>There <em>is</em> a way. Let’s find it.</h2>
     <form>
       <style>
-        input,
+    .input-row input[type="text"],
+    .input-row input[type="number"],
+    .input-row input[type="time"],
+    .input-row input[type="email"] {
+      flex: 1;
+      min-width: 140px;
+    }
+
+    textarea {
+      width: 100%;
+    }
+
+    input[type="text"].small,
+    input[type="number"].small {
+      width: 100px;
+    }
+
+    input[type="text"].tiny,
+    input[type="number"].tiny {
+      width: 80px;
+    }
+
+
         textarea,
         select,
         button {
@@ -263,8 +285,8 @@
       </div>
       <div class="input-row">
         <input type="text" id="start-city" placeholder="City" />
-        <input type="text" id="start-state" placeholder="State" style="width: 80px;" />
-        <input type="text" id="start-zip" placeholder="Zip" style="width: 100px;" />
+        <input type="text" id="start-state" placeholder="State" class="tiny" />
+        <input type="text" id="start-zip" placeholder="Zip" class="small" />
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
@@ -277,8 +299,8 @@
       </div>
       <div class="input-row">
         <input type="text" id="destination-city" placeholder="City" />
-        <input type="text" id="destination-state" placeholder="State" style="width: 80px;" />
-        <input type="text" id="destination-zip" placeholder="Zip" style="width: 100px;" />
+        <input type="text" id="destination-state" placeholder="State" class="tiny" />
+        <input type="text" id="destination-zip" placeholder="Zip" class="small" />
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
