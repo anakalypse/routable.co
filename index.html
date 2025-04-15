@@ -86,68 +86,84 @@
       0% { opacity: 0; transform: translateY(20px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+    .suggestion-box {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      position: absolute;
+      z-index: 1000;
+      max-height: 150px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      font-size: 0.9em;
+    }
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
   </style>
   <script>
-    function addressSuggestions(inputId, cityId, stateId, zipId) {
+    function createSuggestionBox(inputId, cityId, stateId, zipId) {
       const input = document.getElementById(inputId);
       if (!input) return;
 
+      const container = document.createElement('div');
+      container.style.position = 'relative';
+      input.parentNode.insertBefore(container, input);
+      container.appendChild(input);
+
+      const suggestionBox = document.createElement('div');
+      suggestionBox.className = 'suggestion-box';
+      suggestionBox.style.display = 'none';
+      container.appendChild(suggestionBox);
+
       input.addEventListener('input', async () => {
         const value = input.value;
-        if (value.length < 3) return;
+        suggestionBox.innerHTML = '';
+        if (value.length < 3) {
+          suggestionBox.style.display = 'none';
+          return;
+        }
         try {
           const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(value)}&apiKey=2352658152154752af3fb89c105d8a1c`);
           const results = await response.json();
           if (results.features && results.features.length > 0) {
-            const props = results.features[0].properties;
-            const city = document.getElementById(cityId);
-            const state = document.getElementById(stateId);
-            const zip = document.getElementById(zipId);
-            if (city) city.value = props.city || '';
-            if (state) state.value = props.state || '';
-            if (zip) zip.value = props.postcode || '';
+            results.features.forEach(feature => {
+              const item = document.createElement('div');
+              item.className = 'suggestion-item';
+              item.textContent = feature.properties.formatted;
+              item.onclick = () => {
+                input.value = feature.properties.street || feature.properties.address_line1 || feature.properties.formatted;
+                document.getElementById(cityId).value = feature.properties.city || '';
+                document.getElementById(stateId).value = feature.properties.state || '';
+                document.getElementById(zipId).value = feature.properties.postcode || '';
+                suggestionBox.style.display = 'none';
+              };
+              suggestionBox.appendChild(item);
+            });
+            suggestionBox.style.display = 'block';
+          } else {
+            suggestionBox.style.display = 'none';
           }
         } catch (err) {
           console.error('Geoapify API error:', err);
+          suggestionBox.style.display = 'none';
+        }
+      });
+
+      document.addEventListener('click', e => {
+        if (!suggestionBox.contains(e.target) && e.target !== input) {
+          suggestionBox.style.display = 'none';
         }
       });
     }
 
-    function toggleFieldDisabling(checkboxId, targetIds = []) {
-      const checkbox = document.getElementById(checkboxId);
-      checkbox?.addEventListener('change', () => {
-        targetIds.forEach(id => {
-          const field = document.getElementById(id);
-          if (field) {
-            field.disabled = checkbox.checked;
-          }
-        });
-      });
-    }
-
-    function enableOptionalBox(toggleId, inputId) {
-      const toggle = document.getElementById(toggleId);
-      const field = document.getElementById(inputId);
-      if (!toggle || !field) return;
-      toggle.addEventListener('change', () => {
-        field.disabled = !toggle.checked;
-        field.style.opacity = toggle.checked ? '1' : '0.5';
-      });
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        addressSuggestions('start-address', 'start-city', 'start-state', 'start-zip');
-        addressSuggestions('destination-address', 'destination-city', 'destination-state', 'destination-zip');
-
-        toggleFieldDisabling('start-flexible', ['start-time-from', 'start-time-to']);
-        toggleFieldDisabling('arrival-flexible', ['arrival-time-from', 'arrival-time-to']);
-        toggleFieldDisabling('budget-flexible', ['budget-min', 'budget-max']);
-        toggleFieldDisabling('walking-flexible', ['walking-distance']);
-
-        enableOptionalBox('start-uncertain', 'start-uncertain-notes');
-        enableOptionalBox('destination-uncertain', 'destination-uncertain-notes');
-      }, 100);
+      createSuggestionBox('start-address', 'start-city', 'start-state', 'start-zip');
+      createSuggestionBox('destination-address', 'destination-city', 'destination-state', 'destination-zip');
     });
   </script>
 </head>
@@ -155,71 +171,40 @@
   <div class="overlay">
     <h1>Routable</h1>
     <h2>There <em>is</em> a way. Let’s find it.</h2>
-    <form onsubmit="event.preventDefault(); document.getElementById('confirmation').style.display = 'block';">
-      <p style="text-align: center; font-style: italic; color: #4b6043; font-size: 1em; margin-bottom: 2em;">
-        Some routes take more than a search engine to plan. Share what you know — and we’ll do the rest.
-      </p>
-
-      <label for="start-address">Starting Address <span style='color: red'>*</span></label>
+    <form>
+      <label for="start-address">Starting Address</label>
       <div class="input-row">
-        <input type="text" id="start-address" placeholder="Street Address" required style="flex: 2;" />
+        <input type="text" id="start-address" />
       </div>
       <div class="input-row">
-        <input type="text" id="start-city" placeholder="City" required style="flex: 1;" />
-        <input type="text" id="start-state" placeholder="State" required style="width: 60px;" />
-        <input type="text" id="start-zip" placeholder="ZIP" required style="width: 80px;" />
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" /> Unknown</label>
-        <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, landmark)" disabled style="flex: 2; opacity: 0.5;" />
+        <input type="text" id="start-city" />
+        <input type="text" id="start-state" />
+        <input type="text" id="start-zip" />
       </div>
 
-      <label>Preferred Time Range (Start) <span style='color: red'>*</span></label>
+      <label for="destination-address">Destination Address</label>
       <div class="input-row">
-        <input type="time" id="start-time-from" placeholder="From" required />
-        <input type="time" id="start-time-to" placeholder="To" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="start-flexible" /> Flexible</label>
+        <input type="text" id="destination-address" />
+      </div>
+      <div class="input-row">
+        <input type="text" id="destination-city" />
+        <input type="text" id="destination-state" />
+        <input type="text" id="destination-zip" />
       </div>
 
-      <label for="destination-address">Destination Address <span style='color: red'>*</span></label>
+      <label for="arrival-time">Preferred Arrival Time</label>
       <div class="input-row">
-        <input type="text" id="destination-address" placeholder="Street Address" required style="flex: 2;" />
-      </div>
-      <div class="input-row">
-        <input type="text" id="destination-city" placeholder="City" required style="flex: 1;" />
-        <input type="text" id="destination-state" placeholder="State" required style="width: 60px;" />
-        <input type="text" id="destination-zip" placeholder="ZIP" required style="width: 80px;" />
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" /> Unknown</label>
-        <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, landmark)" disabled style="flex: 2; opacity: 0.5;" />
+        <input type="time" id="arrival-time" />
       </div>
 
-      <label>Preferred Time Range (Arrival) <span style='color: red'>*</span></label>
-      <div class="input-row">
-        <input type="time" id="arrival-time-from" placeholder="From" required />
-        <input type="time" id="arrival-time-to" placeholder="To" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="arrival-flexible" /> Flexible</label>
-      </div>
-
-      <label>Trip Type <span style='color: red'>*</span></label>
+      <label for="trip-type">Trip Type</label>
       <div class="radio-group">
-        <label><input type="radio" name="tripType" value="oneway" required /> One-way</label>
+        <label><input type="radio" name="tripType" value="oneway" /> One-way</label>
         <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
       </div>
 
-      <label>Comfortable Walking Distance <span style='color: red'>*</span></label>
-      <div class="input-row">
-        <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 10 mins)" required style="width: 250px;" />
-        <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" /> Flexible</label>
-      </div>
-
-      <label>Transit Budget (USD) <span style='color: red'>*</span></label>
-      <div class="input-row">
-        <input type="number" id="budget-min" placeholder="Min ($)" required />
-        <input type="number" id="budget-max" placeholder="Max ($)" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" /> Flexible</label>
-      </div>
+      <label for="walking-distance">Comfortable Walking Distance</label>
+      <input type="text" id="walking-distance" />
 
       <label>Accessibility / Accommodations</label>
       <div class="checkbox-group">
@@ -227,35 +212,26 @@
         <label><input type="checkbox" /> Avoid stairs or steep hills</label>
         <label><input type="checkbox" /> Prefer indoor waiting areas</label>
         <label><input type="checkbox" /> I travel with a service animal</label>
-        <label><input type="checkbox" /> Other (explain below)</label>
+        <label><input type="checkbox" /> Other</label>
       </div>
-      <textarea rows="2" placeholder="(e.g. wide doors needed, limited time to transfer)"></textarea>
 
-      <label for="otherNotes">Other Notes or Preferences</label>
-      <textarea id="otherNotes" rows="3" placeholder="(e.g. avoid bridges, traveling with children, safety concerns)"></textarea>
+      <label for="budget-min">Transit Budget</label>
+      <div class="input-row">
+        <input type="number" id="budget-min" />
+        <input type="number" id="budget-max" />
+      </div>
 
-      <label for="name">Your Name <span style='color: red'>*</span></label>
-      <input type="text" id="name" placeholder="First name or nickname" required />
+      <label for="notes">Other Notes</label>
+      <textarea id="notes" rows="3"></textarea>
 
-      <label for="contact">Your Email <span style='color: red'>*</span></label>
-      <input type="email" id="contact" placeholder="example@email.com" required />
+      <label for="name">Your Name</label>
+      <input type="text" id="name" />
+
+      <label for="contact">Your Email</label>
+      <input type="email" id="contact" />
 
       <button type="submit">Send Request</button>
-      <div style="margin-top: 30px; padding: 10px; background-color: rgba(255,255,255,0.2); border-radius: 8px; font-size: 0.95em;">
-        <strong>Summary Preview:</strong>
-        <p id="summary-preview" style="margin: 0.5em 0 0 0; color: #333;"></p>
-      </div>
     </form>
-    <div id="confirmation" style="display: none; text-align: center; color: #4b6043; font-style: italic; margin-top: 20px;">
-      Thank you! We’ll start working on your route shortly.
-    </div>
-    <p style="margin-top: 30px; font-size: 0.9em; color: #555; text-align: center;">
-      Note: Itineraries are manually curated. Most are delivered within 24 hours, but may take up to 48 hours depending on the complexity of your trip.
-    </p>
   </div>
-  <footer>
-    <a href="#samples">Samples</a>
-    <a href="#about">About</a>
-  </footer>
 </body>
 </html>
