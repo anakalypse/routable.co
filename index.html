@@ -215,8 +215,8 @@
       <label for="start-city">City</label>
       <div class="input-row">
         <input type="text" id="start-city" placeholder="City" />
-        <input type="text" id="start-state" placeholder="State" />
-        <input type="text" id="start-zip" placeholder="ZIP" />
+        <input type="text" id="start-state" placeholder="State (e.g. WA)" />
+        <input type="text" id="start-zip" placeholder="ZIP (e.g. 98122)" />
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
@@ -230,8 +230,8 @@
       <label for="destination-city">City</label>
       <div class="input-row">
         <input type="text" id="destination-city" placeholder="City" />
-        <input type="text" id="destination-state" placeholder="State" />
-        <input type="text" id="destination-zip" placeholder="ZIP" />
+        <input type="text" id="destination-state" placeholder="State (e.g. CA)" />
+        <input type="text" id="destination-zip" placeholder="ZIP (e.g. 94043)" />
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
@@ -240,7 +240,7 @@
 
       <label for="arrival-time">Preferred Arrival Time</label>
       <div class="input-row">
-        <input type="time" id="arrival-time" />
+        <input type="time" id="arrival-time" placeholder="e.g. 08:30" />
       </div>
 
       <label for="trip-type">Trip Type</label>
@@ -250,7 +250,7 @@
       </div>
 
       <label for="walking-distance">Comfortable Walking Distance</label>
-      <input type="text" id="walking-distance" />
+      <input type="text" id="walking-distance" placeholder="e.g. 1/4 mile or 5 minutes" />
 
       <label>Accessibility / Accommodations</label>
       <div class="checkbox-group">
@@ -263,18 +263,18 @@
 
       <label for="budget-min">Transit Budget</label>
       <div class="input-row">
-        <input type="number" id="budget-min" />
-        <input type="number" id="budget-max" />
+        <input type="number" id="budget-min" placeholder="Min (USD)" />
+        <input type="number" id="budget-max" placeholder="Max (USD)" />
       </div>
 
       <label for="notes">Other Notes</label>
-      <textarea id="notes" rows="3"></textarea>
+      <textarea id="notes" rows="3" placeholder="e.g. avoid bridges, traveling with kids, etc."></textarea>
 
       <label for="name">Your Name</label>
-      <input type="text" id="name" />
+      <input type="text" id="name" placeholder="e.g. Alex" />
 
       <label for="contact">Your Email</label>
-      <input type="email" id="contact" />
+      <input type="email" id="contact" placeholder="e.g. alex@email.com" />
 
       <button type="submit">Send Request</button>
     </form>
