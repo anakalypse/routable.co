@@ -207,7 +207,43 @@
   <div class="overlay">
     <h1>Routable</h1>
     <h2>There <em>is</em> a way. Let’s find it.</h2>
-    <form>
+    $1
+      <style>
+        input,
+        textarea,
+        select,
+        button {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          background-color: #fff;
+          transition: all 0.3s ease;
+          font-size: 0.95em;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+          margin-right: 8px;
+        }
+
+        button {
+          background-color: #4b6043;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #3a4d35;
+          transform: translateY(-2px);
+        }
+
+        input:focus, textarea:focus, select:focus {
+          border-color: #4b6043;
+          box-shadow: 0 0 6px rgba(75, 96, 67, 0.3);
+        }
+      </style>
       <label for="start-address">Starting Address</label>
       <div class="input-row">
         <input type="text" id="start-address" placeholder="Street address" />
@@ -248,15 +284,15 @@
       </div>
 
       <label for="walking-distance">Comfortable Walking Distance</label>
-      <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile or 5 minutes)" />
+      <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" />
 
       <label>Accessibility / Accommodations</label>
       <div class="checkbox-group">
         <label><input type="checkbox" /> Wheelchair accessible only</label>
         <label><input type="checkbox" /> Avoid stairs or steep hills</label>
         <label><input type="checkbox" /> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" /> I travel with a service animal</label>
-        <label><input type="checkbox" /> Other</label>
+        $1<label><input type="checkbox" /> Other</label>
+        <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
       </div>
 
       <label for="budget-min">Transit Budget</label>
