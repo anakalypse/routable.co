@@ -136,7 +136,7 @@
               item.className = 'suggestion-item';
               item.textContent = feature.properties.formatted;
               item.onclick = () => {
-                input.value = feature.properties.street || feature.properties.address_line1 || feature.properties.formatted;
+                input.value = feature.properties.formatted || '';
                 document.getElementById(cityId).value = feature.properties.city || '';
                 document.getElementById(stateId).value = feature.properties.state || '';
                 document.getElementById(zipId).value = feature.properties.postcode || '';
