@@ -162,6 +162,35 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+  const toggleFlex = (checkboxId, inputIds) => {
+    const checkbox = document.getElementById(checkboxId);
+    const inputs = inputIds.map(id => document.getElementById(id));
+    const update = () => {
+      inputs.forEach(input => {
+        if (input) {
+          input.disabled = checkbox.checked;
+          input.required = !checkbox.checked;
+          input.style.opacity = checkbox.checked ? '0.5' : '1';
+        }
+      });
+    };
+    if (checkbox) checkbox.addEventListener('change', update);
+    update();
+  };
+
+  toggleFlex('time-flexible', ['start-time', 'end-time']);
+  toggleFlex('walking-flexible', ['walking-distance']);
+  toggleFlex('budget-flexible', ['budget-min', 'budget-max']);
+  ['start', 'destination'].forEach(prefix => {
+    const checkbox = document.getElementById(`${prefix}-uncertain`);
+    const notes = document.getElementById(`${prefix}-uncertain-notes`);
+    if (checkbox && notes) {
+      checkbox.addEventListener('change', () => {
+        notes.disabled = !checkbox.checked;
+        notes.style.opacity = checkbox.checked ? '1' : '0.5';
+      });
+    }
+  });
   createSuggestionBox('start-address', 'start-city', 'start-state', 'start-zip');
   createSuggestionBox('destination-address', 'destination-city', 'destination-state', 'destination-zip');
 
@@ -307,9 +336,11 @@
         <input type="text" id="destination-uncertain-notes" disabled style="flex: 2; opacity: 0.5;" />
       </div>
 
-      <label for="arrival-time">Preferred Arrival Time</label>
+      <label>Time Range</label>
       <div class="input-row">
-        <input type="time" id="arrival-time" placeholder="(e.g. 08:30)" />
+        <input type="time" id="start-time" style="width: 110px;" placeholder="Start" required />
+        <input type="time" id="end-time" style="width: 110px;" placeholder="Arrival" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="time-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
 
       <label for="trip-type">Trip Type</label>
@@ -318,8 +349,10 @@
         <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
       </div>
 
-      <label for="walking-distance">Comfortable Walking Distance</label>
-      <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" />
+      <div class="input-row">
+        <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" style="flex: 2;" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" style="margin-left: 10px;" /> Flexible</label>
+      </div>
 
       <label>Accessibility / Accommodations</label>
       <div class="checkbox-group">
@@ -330,9 +363,10 @@
         <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
       </div>
 
-      <label for="budget-min">Transit Budget</label>
       <div class="input-row">
-        <input type="number" id="budget-max" placeholder="(Max USD)" style="max-width: 200px;" />
+        <input type="number" id="budget-min" style="width: 120px;" required />
+        <input type="number" id="budget-max" placeholder="(Max USD)" style="width: 120px;" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
 
       <label for="notes">Other notes</label>
