@@ -27,7 +27,7 @@
     .overlay {
       background-color: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
-      max-width: 650px;
+      max-width: 700px;
       margin: 50px auto;
       padding: 30px 40px;
       border-radius: 12px;
@@ -53,6 +53,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      animation: fadeIn 1s ease-in-out;
     }
     .input-row {
       display: flex;
@@ -66,6 +67,10 @@
       flex-direction: column;
       gap: 6px;
     }
+    input:disabled, textarea:disabled {
+      background-color: #eaeaea;
+      opacity: 0.7;
+    }
     footer {
       width: 100%;
       background-color: rgba(255, 255, 255, 0.2);
@@ -77,10 +82,16 @@
       font-family: 'Segoe UI', sans-serif;
       margin-top: 50px;
     }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
   </style>
   <script>
     function addressSuggestions(inputId, cityId, stateId, zipId) {
       const input = document.getElementById(inputId);
+      if (!input) return;
+
       input.addEventListener('input', async () => {
         const value = input.value;
         if (value.length < 3) return;
@@ -89,25 +100,61 @@
           const results = await response.json();
           if (results.features && results.features.length > 0) {
             const props = results.features[0].properties;
-            document.getElementById(cityId).value = props.city || '';
-            document.getElementById(stateId).value = props.state || '';
-            document.getElementById(zipId).value = props.postcode || '';
+            const city = document.getElementById(cityId);
+            const state = document.getElementById(stateId);
+            const zip = document.getElementById(zipId);
+            if (city) city.value = props.city || '';
+            if (state) state.value = props.state || '';
+            if (zip) zip.value = props.postcode || '';
           }
         } catch (err) {
           console.error('Geoapify API error:', err);
         }
       });
     }
+
+    function toggleFieldDisabling(checkboxId, targetIds = []) {
+      const checkbox = document.getElementById(checkboxId);
+      checkbox?.addEventListener('change', () => {
+        targetIds.forEach(id => {
+          const field = document.getElementById(id);
+          if (field) {
+            field.disabled = checkbox.checked;
+          }
+        });
+      });
+    }
+
+    function enableOptionalBox(toggleId, inputId) {
+      const toggle = document.getElementById(toggleId);
+      const field = document.getElementById(inputId);
+      if (!toggle || !field) return;
+      toggle.addEventListener('change', () => {
+        field.disabled = !toggle.checked;
+        field.style.opacity = toggle.checked ? '1' : '0.5';
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      addressSuggestions('start-address', 'start-city', 'start-state', 'start-zip');
-      addressSuggestions('destination-address', 'destination-city', 'destination-state', 'destination-zip');
+      setTimeout(() => {
+        addressSuggestions('start-address', 'start-city', 'start-state', 'start-zip');
+        addressSuggestions('destination-address', 'destination-city', 'destination-state', 'destination-zip');
+
+        toggleFieldDisabling('start-flexible', ['start-time-from', 'start-time-to']);
+        toggleFieldDisabling('arrival-flexible', ['arrival-time-from', 'arrival-time-to']);
+        toggleFieldDisabling('budget-flexible', ['budget-min', 'budget-max']);
+        toggleFieldDisabling('walking-flexible', ['walking-distance']);
+
+        enableOptionalBox('start-uncertain', 'start-uncertain-notes');
+        enableOptionalBox('destination-uncertain', 'destination-uncertain-notes');
+      }, 100);
     });
   </script>
 </head>
 <body>
   <div class="overlay">
-    <h1 style="margin-bottom: 0.2em;">Routable</h1>
-    <h2 style="margin-top: 0; margin-bottom: 1em;">There <em>is</em> a way. Let’s find it.</h2>
+    <h1>Routable</h1>
+    <h2>There <em>is</em> a way. Let’s find it.</h2>
     <form onsubmit="event.preventDefault(); document.getElementById('confirmation').style.display = 'block';">
       <p style="text-align: center; font-style: italic; color: #4b6043; font-size: 1em; margin-bottom: 2em;">
         Some routes take more than a search engine to plan. Share what you know — and we’ll do the rest.
@@ -127,6 +174,13 @@
         <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, landmark)" disabled style="flex: 2; opacity: 0.5;" />
       </div>
 
+      <label>Preferred Time Range (Start) <span style='color: red'>*</span></label>
+      <div class="input-row">
+        <input type="time" id="start-time-from" placeholder="From" required />
+        <input type="time" id="start-time-to" placeholder="To" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="start-flexible" /> Flexible</label>
+      </div>
+
       <label for="destination-address">Destination Address <span style='color: red'>*</span></label>
       <div class="input-row">
         <input type="text" id="destination-address" placeholder="Street Address" required style="flex: 2;" />
@@ -143,13 +197,13 @@
 
       <label>Preferred Time Range (Arrival) <span style='color: red'>*</span></label>
       <div class="input-row">
-        <input type="time" placeholder="From" required />
-        <input type="time" placeholder="To" required />
-        <label style="font-weight: normal;"><input type="checkbox" /> Flexible</label>
+        <input type="time" id="arrival-time-from" placeholder="From" required />
+        <input type="time" id="arrival-time-to" placeholder="To" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="arrival-flexible" /> Flexible</label>
       </div>
 
       <label>Trip Type <span style='color: red'>*</span></label>
-      <div class="radio-group" style="font-weight: normal; font-family: inherit;">
+      <div class="radio-group">
         <label><input type="radio" name="tripType" value="oneway" required /> One-way</label>
         <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
       </div>
@@ -160,16 +214,6 @@
         <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" /> Flexible</label>
       </div>
 
-      <label>Accessibility / Accommodations</label>
-      <div class="checkbox-group" style="font-weight: normal; font-family: inherit;">
-        <label><input type="checkbox" /> Wheelchair accessible only</label>
-        <label><input type="checkbox" /> Avoid stairs or steep hills</label>
-        <label><input type="checkbox" /> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" /> I travel with a service animal</label>
-        <label><input type="checkbox" /> Other (explain below)</label>
-      </div>
-      <textarea rows="2" placeholder="(e.g. wide doors needed, timing issues)"></textarea>
-
       <label>Transit Budget (USD) <span style='color: red'>*</span></label>
       <div class="input-row">
         <input type="number" id="budget-min" placeholder="Min ($)" required />
@@ -177,11 +221,21 @@
         <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" /> Flexible</label>
       </div>
 
+      <label>Accessibility / Accommodations</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" /> Wheelchair accessible only</label>
+        <label><input type="checkbox" /> Avoid stairs or steep hills</label>
+        <label><input type="checkbox" /> Prefer indoor waiting areas</label>
+        <label><input type="checkbox" /> I travel with a service animal</label>
+        <label><input type="checkbox" /> Other (explain below)</label>
+      </div>
+      <textarea rows="2" placeholder="(e.g. wide doors needed, limited time to transfer)"></textarea>
+
       <label for="otherNotes">Other Notes or Preferences</label>
-      <textarea id="otherNotes" rows="3" placeholder="(e.g. safety concerns, avoid bridges)"></textarea>
+      <textarea id="otherNotes" rows="3" placeholder="(e.g. avoid bridges, traveling with children, safety concerns)"></textarea>
 
       <label for="name">Your Name <span style='color: red'>*</span></label>
-      <input type="text" id="name" required />
+      <input type="text" id="name" placeholder="First name or nickname" required />
 
       <label for="contact">Your Email <span style='color: red'>*</span></label>
       <input type="email" id="contact" placeholder="example@email.com" required />
@@ -192,7 +246,9 @@
         <p id="summary-preview" style="margin: 0.5em 0 0 0; color: #333;"></p>
       </div>
     </form>
-    <div id="confirmation">Thank you! We’ll start working on your route shortly.</div>
+    <div id="confirmation" style="display: none; text-align: center; color: #4b6043; font-style: italic; margin-top: 20px;">
+      Thank you! We’ll start working on your route shortly.
+    </div>
     <p style="margin-top: 30px; font-size: 0.9em; color: #555; text-align: center;">
       Note: Itineraries are manually curated. Most are delivered within 24 hours, but may take up to 48 hours depending on the complexity of your trip.
     </p>
