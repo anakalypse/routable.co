@@ -222,6 +222,7 @@ function addressSuggestions(inputId, cityId, stateId, zipId) {
   suggestionBox.style.maxHeight = '200px';
   suggestionBox.style.overflowY = 'auto';
   suggestionBox.style.display = 'none';
+
   const container = document.createElement('div');
   container.style.position = 'relative';
   const wrapper = input.parentNode;
@@ -239,7 +240,6 @@ function addressSuggestions(inputId, cityId, stateId, zipId) {
     suggestionBox.innerHTML = '';
     suggestionBox.appendChild(loader);
     const value = input.value;
-    suggestionBox.innerHTML = '';
     if (value.length < 3) {
       suggestionBox.style.display = 'none';
       return;
@@ -248,28 +248,18 @@ function addressSuggestions(inputId, cityId, stateId, zipId) {
       const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(value)}&apiKey=2352658152154752af3fb89c105d8a1c`, {
         method: 'GET',
         mode: 'cors',
-        headers: {
-          'Accept': 'application/json'
-        }
+        headers: { 'Accept': 'application/json' }
       });
       const results = await response.json();
       console.log('Geoapify raw response:', results);
-      } catch (error) {
-        console.error('Geoapify lookup failed:', error);
-        suggestionBox.style.display = 'none';
-      }
-      });
-      const results = await response.json();
-console.log('Geoapify raw response:', results);
+
+      suggestionBox.innerHTML = '';
       if (results.features && results.features.length > 0) {
         results.features.forEach(result => {
           const props = result.properties;
           const item = document.createElement('div');
-          item.textContent = props.formatted;
-          item.style.padding = '8px';
-          item.style.display = 'flex';
-          item.style.alignItems = 'center';
           item.innerHTML = `<span style='margin-right: 8px;'>📍</span> ${props.formatted}`;
+          item.style.padding = '8px';
           item.style.cursor = 'pointer';
           item.addEventListener('click', () => {
             input.value = props.street || props.address_line1 || props.formatted;
@@ -290,10 +280,8 @@ console.log('Geoapify raw response:', results);
         suggestionBox.appendChild(noResults);
         suggestionBox.style.display = 'block';
       }
-      }
     } catch (error) {
       console.error('Geoapify lookup failed:', error);
-      console.warn('Geoapify lookup failed:', error);
       suggestionBox.style.display = 'none';
     }
   });
@@ -303,6 +291,7 @@ console.log('Geoapify raw response:', results);
       suggestionBox.style.display = 'none';
     }
   });
+}
 }
 addressSuggestions('start-address', 'start-city', 'start-state', 'start-zip');
 addressSuggestions('destination-address', 'destination-city', 'destination-state', 'destination-zip');
