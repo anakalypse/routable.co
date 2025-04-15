@@ -165,8 +165,16 @@
   createSuggestionBox('start-address', 'start-city', 'start-state', 'start-zip');
   createSuggestionBox('destination-address', 'destination-city', 'destination-state', 'destination-zip');
 
-  // Add confirm buttons below each address input
   ['start', 'destination'].forEach(prefix => {
+    const checkbox = document.getElementById(`${prefix}-uncertain`);
+    const notes = document.getElementById(`${prefix}-uncertain-notes`);
+    if (checkbox && notes) {
+      checkbox.addEventListener('change', () => {
+        notes.disabled = !checkbox.checked;
+        notes.style.opacity = checkbox.checked ? '1' : '0.5';
+      });
+    }
+
     const input = document.getElementById(`${prefix}-address`);
     const confirmBtn = document.createElement('button');
     confirmBtn.type = 'button';
@@ -228,16 +236,20 @@
         }
 
         button {
-          background-color: #4b6043;
-          color: #fff;
-          border: none;
-          cursor: pointer;
-        }
+  background-color: #4b6043;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 12px 24px;
+  width: 100%;
+}
 
         button:hover {
-          background-color: #3a4d35;
-          transform: translateY(-2px);
-        }
+  background-color: #3a4d35;
+  transform: translateY(-2px);
+}
 
         input:focus, textarea:focus, select:focus {
           border-color: #4b6043;
