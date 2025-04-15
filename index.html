@@ -162,6 +162,17 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+  const tripTypeRadios = document.getElementsByName('tripType');
+  const returnTime = document.getElementById('end-time');
+  if (tripTypeRadios && returnTime) {
+    tripTypeRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        returnTime.disabled = radio.value === 'oneway';
+        returnTime.required = radio.value !== 'oneway';
+        returnTime.style.opacity = radio.value === 'oneway' ? '0.5' : '1';
+      });
+    });
+  }
   const toggleFlex = (checkboxId, inputIds) => {
     const checkbox = document.getElementById(checkboxId);
     const inputs = inputIds.map(id => document.getElementById(id));
@@ -178,7 +189,8 @@
     update();
   };
 
-  toggleFlex('time-flexible', ['start-time', 'end-time']);
+  toggleFlex('time-flexible', ['start-time']);
+  toggleFlex('return-flexible', ['end-time']);
   toggleFlex('walking-flexible', ['walking-distance']);
   toggleFlex('budget-flexible', ['budget-min', 'budget-max']);
   ['start', 'destination'].forEach(prefix => {
@@ -336,12 +348,18 @@
         <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
       </div>
 
-      <label for="time-range">Time Range</label>
+      <label for="start-time">Leaving Time</label>
       <div class="input-row">
-        <input type="time" id="start-time" style="width: 80px;" placeholder="Start" required />
-        <input type="time" id="end-time" style="width: 80px;" placeholder="Arrival" required />
+        <input type="time" id="start-time" style="width: 80px;" required />
         <label style="font-weight: normal;"><input type="checkbox" id="time-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
+
+      <label for="end-time">Return Time</label>
+      <div class="input-row">
+        <input type="time" id="end-time" style="width: 80px;" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="return-flexible" style="margin-left: 10px;" /> Flexible</label>
+      </div>
+      <textarea id="time-notes" rows="2" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
 
       <label for="trip-type">Trip Type</label>
       <div class="radio-group">
@@ -349,7 +367,7 @@
         <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
       </div>
 
-      <label for="walking-distance">Comfortable Walking Distance</label>
+      <label for="walking-distance">Comfortable Walking Distance (e.g. up to 1/4 mile)</label>
       <div class="input-row">
         <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" style="flex: 2;" required />
         <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" style="margin-left: 10px;" /> Flexible</label>
@@ -364,7 +382,7 @@
         <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
       </div>
 
-      <label for="budget-max">Transit Budget</label>
+      <label for="budget-max">Transit Budget (USD)</label>
       <div class="input-row">
         <input type="number" id="budget-max" placeholder="(Max USD)" style="width: 120px;" required />
         <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" style="margin-left: 10px;" /> Flexible</label>
