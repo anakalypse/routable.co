@@ -319,7 +319,7 @@
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
-        <input type="text" id="start-uncertain-notes" disabled style="flex: 2; opacity: 0.5;" />
+        <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
       </div>
 
       <label for="destination-address">Destination Address</label>
@@ -333,13 +333,13 @@
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
-        <input type="text" id="destination-uncertain-notes" disabled style="flex: 2; opacity: 0.5;" />
+        <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
       </div>
 
-      <label>Time Range</label>
+      <label for="time-range">Time Range</label>
       <div class="input-row">
-        <input type="time" id="start-time" style="width: 110px;" placeholder="Start" required />
-        <input type="time" id="end-time" style="width: 110px;" placeholder="Arrival" required />
+        <input type="time" id="start-time" style="width: 80px;" placeholder="Start" required />
+        <input type="time" id="end-time" style="width: 80px;" placeholder="Arrival" required />
         <label style="font-weight: normal;"><input type="checkbox" id="time-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
 
@@ -349,6 +349,7 @@
         <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
       </div>
 
+      <label for="walking-distance">Comfortable Walking Distance</label>
       <div class="input-row">
         <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" style="flex: 2;" required />
         <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" style="margin-left: 10px;" /> Flexible</label>
@@ -363,8 +364,8 @@
         <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
       </div>
 
+      <label for="budget-max">Transit Budget</label>
       <div class="input-row">
-        <input type="number" id="budget-min" style="width: 120px;" required />
         <input type="number" id="budget-max" placeholder="(Max USD)" style="width: 120px;" required />
         <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
