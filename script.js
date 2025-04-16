@@ -5,7 +5,6 @@ function setupAutocomplete(inputId, suggestionBoxId) {
   const suggestionBox = document.getElementById(suggestionBoxId);
   let controller;
 
-  // Apply wider styling using class for consistency and maintainability
   input.classList.add('wide-input');
 
   input.addEventListener('input', async () => {
@@ -54,13 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAutocomplete('destination-address', 'destination-suggestions');
 });
 
-/*
-  Add to your CSS file:
-  .wide-input {
-    width: 100%;
-    min-width: 300px;
-    max-width: 100%;
-    padding: 10px;
-    font-size: 1em;
-  }
-*/
+.wide-input {
+  width: 100%;
+  min-width: 400px;
+  max-width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+}
