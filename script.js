@@ -1,51 +1,59 @@
-const hereApiKey = '1HQmrc3Q5W6Bd7J6M9wpgKcPNvU_egDX0rbnipuOEq8';
+const mapboxToken = "pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w";
 
-function createSuggestionBox(inputId) {
+function setupAutocomplete(inputId) {
   const input = document.getElementById(inputId);
-  if (!input) return;
-
-  input.placeholder = '';
-
-  const container = document.createElement('div');
-  container.style.position = 'relative';
-  input.parentNode.insertBefore(container, input);
-  container.appendChild(input);
+  let controller;
 
   const suggestionBox = document.createElement('div');
   suggestionBox.className = 'suggestion-box';
+  suggestionBox.style.position = 'absolute';
+  suggestionBox.style.background = '#fff';
+  suggestionBox.style.border = '1px solid #ccc';
+  suggestionBox.style.zIndex = '1000';
+  suggestionBox.style.width = input.offsetWidth + 'px';
+  suggestionBox.style.maxHeight = '200px';
+  suggestionBox.style.overflowY = 'auto';
   suggestionBox.style.display = 'none';
-  container.appendChild(suggestionBox);
+  input.parentNode.style.position = 'relative';
+  input.parentNode.appendChild(suggestionBox);
 
   input.addEventListener('input', async () => {
-    const value = input.value;
-    suggestionBox.innerHTML = '';
-    if (value.length < 3) {
+    const query = input.value;
+    if (query.length < 3) {
+      suggestionBox.innerHTML = '';
       suggestionBox.style.display = 'none';
       return;
     }
+
+    if (controller) controller.abort();
+    controller = new AbortController();
+
     try {
-      const response = await fetch(
-        `https://autocomplete.search.hereapi.com/v1/autocomplete?q=${encodeURIComponent(value)}&apiKey=${hereApiKey}`
-      );
-      const results = await response.json();
-      if (results.items && results.items.length > 0) {
-        results.items.forEach(item => {
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'suggestion-item';
-          itemDiv.textContent = item.address.label;
-          itemDiv.onclick = () => {
-            input.value = item.address.label || '';
+      const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&autocomplete=true&limit=5`, {
+        signal: controller.signal
+      });
+      const data = await res.json();
+
+      suggestionBox.innerHTML = '';
+      if (data.features.length > 0) {
+        data.features.forEach(feature => {
+          const item = document.createElement('div');
+          item.textContent = feature.place_name;
+          item.style.padding = '8px';
+          item.style.cursor = 'pointer';
+          item.addEventListener('click', () => {
+            input.value = feature.place_name;
             suggestionBox.style.display = 'none';
-          };
-          suggestionBox.appendChild(itemDiv);
+          });
+          suggestionBox.appendChild(item);
         });
         suggestionBox.style.display = 'block';
       } else {
-        suggestionBox.style.display = 'none';
+        suggestionBox.innerHTML = '<div style="padding: 8px; color: #888;">No results found</div>';
+        suggestionBox.style.display = 'block';
       }
-    } catch (err) {
-      console.error('HERE Autocomplete API error:', err);
-      suggestionBox.style.display = 'none';
+    } catch (e) {
+      if (e.name !== 'AbortError') console.error(e);
     }
   });
 
@@ -57,6 +65,6 @@ function createSuggestionBox(inputId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  createSuggestionBox('start-address');
-  createSuggestionBox('destination-address');
+  setupAutocomplete('start-address');
+  setupAutocomplete('destination-address');
 });
