@@ -5,6 +5,10 @@ function setupAutocomplete(inputId, suggestionBoxId) {
   const suggestionBox = document.getElementById(suggestionBoxId);
   let controller;
 
+  // Increase the input box width for better visibility
+  input.style.width = '100%';
+  input.style.minWidth = '400px';
+
   input.addEventListener('input', async () => {
     const query = input.value;
     suggestionBox.innerHTML = '';
