@@ -1,8 +1,10 @@
 const hereApiKey = '1HQmrc3Q5W6Bd7J6M9wpgKcPNvU_egDX0rbnipuOEq8';
 
-function createSuggestionBox(inputId) {
+function createSuggestionBox(inputId, cityId, stateId, zipId, streetId) {
   const input = document.getElementById(inputId);
   if (!input) return;
+
+  input.placeholder = '';
 
   const container = document.createElement('div');
   container.style.position = 'relative';
@@ -32,6 +34,10 @@ function createSuggestionBox(inputId) {
           itemDiv.className = 'suggestion-item';
           itemDiv.textContent = item.address.label;
           itemDiv.onclick = () => {
+            document.getElementById(streetId).value = item.address.street || item.address.houseNumber || item.address.label || '';
+            document.getElementById(cityId).value = item.address.city || '';
+            document.getElementById(stateId).value = item.address.state || '';
+            document.getElementById(zipId).value = item.address.postalCode || '';
             input.value = item.address.label || '';
             suggestionBox.style.display = 'none';
           };
