@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Routable | Find Your Way</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="overlay">
@@ -16,24 +16,31 @@
       <div class="input-row">
         <input type="text" id="start-address" required />
       </div>
+      <div class="input-row">
+        <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
+        <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
+      </div>
 
       <label for="destination-address">Destination Address</label>
       <div class="input-row">
         <input type="text" id="destination-address" required />
       </div>
+      <div class="input-row">
+        <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
+        <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
+      </div>
 
       <label for="start-time">Leaving Time</label>
       <div class="input-row">
         <input type="time" id="start-time" style="width: 80px;" required />
-        <label><input type="checkbox" id="time-flexible" style="margin-left: 10px;" /> Flexible</label>
+        <label style="font-weight: normal;"><input type="checkbox" id="time-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
 
       <label for="end-time">Return Time</label>
       <div class="input-row">
         <input type="time" id="end-time" style="width: 80px;" required />
-        <label><input type="checkbox" id="return-flexible" style="margin-left: 10px;" /> Flexible</label>
+        <label style="font-weight: normal;"><input type="checkbox" id="return-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
-
       <textarea id="time-notes" rows="2" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
 
       <label for="trip-type">Trip Type</label>
@@ -44,8 +51,8 @@
 
       <label for="walking-distance">Comfortable Walking Distance (e.g. up to 1/4 mile)</label>
       <div class="input-row">
-        <input type="text" id="walking-distance" style="flex: 2;" required />
-        <label><input type="checkbox" id="walking-flexible" style="margin-left: 10px;" /> Flexible</label>
+        <input type="text" id="walking-distance" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
 
       <label>Accessibility / Accommodations</label>
@@ -59,8 +66,8 @@
 
       <label for="budget-max">Transit Budget (USD)</label>
       <div class="input-row">
-        <input type="number" id="budget-max" style="width: 120px;" required />
-        <label><input type="checkbox" id="budget-flexible" style="margin-left: 10px;" /> Flexible</label>
+        <input type="number" id="budget-max" placeholder="(Max USD)" style="width: 120px;" required />
+        <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" style="margin-left: 10px;" /> Flexible</label>
       </div>
 
       <label for="notes">Other notes</label>
@@ -75,6 +82,5 @@
       <button type="submit">Send Request</button>
     </form>
   </div>
-  <script src="script.js"></script>
 </body>
 </html>
