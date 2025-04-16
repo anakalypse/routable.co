@@ -1,3 +1,4 @@
+/* Base form styles */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -67,51 +68,9 @@ form {
   gap: 6px;
 }
 
-input:disabled,
-textarea:disabled {
+input:disabled, textarea:disabled {
   background-color: #eaeaea;
   opacity: 0.7;
-}
-
-textarea,
-select,
-button {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: #fff;
-  transition: all 0.3s ease;
-  font-size: 0.95em;
-  width: 100%;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  margin-right: 8px;
-}
-
-button {
-  background-color: #4b6043;
-  color: #fff;
-  border: none;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  padding: 12px 24px;
-  width: 100%;
-}
-
-button:hover {
-  background-color: #3a4d35;
-  transform: translateY(-2px);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #4b6043;
-  box-shadow: 0 0 6px rgba(75, 96, 67, 0.3);
 }
 
 footer {
@@ -127,15 +86,8 @@ footer {
 }
 
 @keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .suggestion-box {
@@ -150,11 +102,21 @@ footer {
   font-size: 0.9em;
 }
 
-.suggestion-item {
+.suggestion-item,
+.autocomplete-suggestion {
   padding: 8px 12px;
   cursor: pointer;
 }
 
-.suggestion-item:hover {
+.suggestion-item:hover,
+.autocomplete-suggestion:hover {
   background-color: #f0f0f0;
+}
+
+.wide-input {
+  width: 100%;
+  min-width: 300px;
+  max-width: 100%;
+  padding: 10px;
+  font-size: 1em;
 }
