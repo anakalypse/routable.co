@@ -6,6 +6,8 @@
   <title>Routable | Find Your Way</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
 </head>
 <body>
   <div class="overlay">
@@ -82,5 +84,40 @@
       <button type="submit">Send Request</button>
     </form>
   </div>
+
+  <script>
+    const mapboxToken = "pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w";
+
+    function setupAutocomplete(inputId) {
+      const input = document.getElementById(inputId);
+      let controller;
+
+      input.addEventListener('input', async () => {
+        const query = input.value;
+        if (query.length < 3) return;
+
+        if (controller) controller.abort();
+        controller = new AbortController();
+
+        try {
+          const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&autocomplete=true&limit=5`, { signal: controller.signal });
+          const data = await res.json();
+
+          // just show one suggestion: most relevant
+          if (data.features.length > 0) {
+            const first = data.features[0];
+            input.value = first.place_name;
+          }
+        } catch (e) {
+          if (e.name !== 'AbortError') console.error(e);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setupAutocomplete('start-address');
+      setupAutocomplete('destination-address');
+    });
+  </script>
 </body>
 </html>
