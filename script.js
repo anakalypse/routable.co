@@ -25,7 +25,7 @@ function createSuggestionBox(inputId) {
     }
     try {
       const response = await fetch(
-        `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(value)}&apiKey=${hereApiKey}`
+        `https://autocomplete.search.hereapi.com/v1/autocomplete?q=${encodeURIComponent(value)}&apiKey=${hereApiKey}`
       );
       const results = await response.json();
       if (results.items && results.items.length > 0) {
@@ -44,7 +44,7 @@ function createSuggestionBox(inputId) {
         suggestionBox.style.display = 'none';
       }
     } catch (err) {
-      console.error('HERE API error:', err);
+      console.error('HERE Autocomplete API error:', err);
       suggestionBox.style.display = 'none';
     }
   });
@@ -55,3 +55,8 @@ function createSuggestionBox(inputId) {
     }
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  createSuggestionBox('start-address');
+  createSuggestionBox('destination-address');
+});
