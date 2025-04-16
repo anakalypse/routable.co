@@ -1,0 +1,167 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: url('https://i.imgur.com/5FLv0aw.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #2f2f2f;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+.overlay {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 400;
+  font-size: 2.5em;
+  color: #2e2e2e;
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+
+h2 {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3em;
+  font-weight: 400;
+  margin-top: 0.2em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+input:disabled,
+textarea:disabled {
+  background-color: #eaeaea;
+  opacity: 0.7;
+}
+
+textarea,
+select,
+button,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="time"] {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  font-size: 0.95em;
+}
+
+input[type="text"].small,
+input[type="number"].small {
+  width: 100px;
+}
+
+input[type="text"].tiny,
+input[type="number"].tiny {
+  width: 80px;
+}
+
+button {
+  background-color: #4b6043;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #3a4d35;
+  transform: translateY(-2px);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #4b6043;
+  box-shadow: 0 0 6px rgba(75, 96, 67, 0.3);
+}
+
+footer {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 50px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-box {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1000;
+  max-height: 150px;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-size: 0.9em;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
