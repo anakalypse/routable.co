@@ -14,88 +14,36 @@
     <form>
       <label for="start-address">Starting Address</label>
       <div class="input-row">
-        <input type="text" id="start-address" required />
+        <input type="text" id="start-address" />
       </div>
       <div class="input-row">
-        <input type="text" id="start-city" placeholder="City" required />
-        <input type="text" id="start-state" placeholder="State" class="tiny" required />
-        <input type="text" id="start-zip" placeholder="Zip" class="small" required />
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
-        <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
+        <input type="text" id="start-city" placeholder="City" />
+        <input type="text" id="start-state" placeholder="State" />
+        <input type="text" id="start-zip" placeholder="Zip" />
       </div>
 
       <label for="destination-address">Destination Address</label>
       <div class="input-row">
-        <input type="text" id="destination-address" required />
+        <input type="text" id="destination-address" />
       </div>
       <div class="input-row">
-        <input type="text" id="destination-city" placeholder="City" required />
-        <input type="text" id="destination-state" placeholder="State" class="tiny" required />
-        <input type="text" id="destination-zip" placeholder="Zip" class="small" required />
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
-        <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
+        <input type="text" id="destination-city" placeholder="City" />
+        <input type="text" id="destination-state" placeholder="State" />
+        <input type="text" id="destination-zip" placeholder="Zip" />
       </div>
 
-      <label for="start-time">Leaving Time</label>
-      <div class="input-row">
-        <input type="time" id="start-time" style="width: 80px;" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="time-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-
-      <label for="end-time">Return Time</label>
-      <div class="input-row">
-        <input type="time" id="end-time" style="width: 80px;" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="return-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-      <textarea id="time-notes" rows="2" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
-
-      <label for="trip-type">Trip Type</label>
-      <div class="radio-group">
-        <label><input type="radio" name="tripType" value="oneway" /> One-way</label>
-        <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
-      </div>
-
-      <label for="walking-distance">Comfortable Walking Distance</label>
-      <div class="input-row">
-        <input type="text" id="walking-distance" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-
-      <label>Accessibility / Accommodations</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" /> Wheelchair accessible only</label>
-        <label><input type="checkbox" /> Avoid stairs or steep hills</label>
-        <label><input type="checkbox" /> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" /> Other</label>
-        <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
-      </div>
-
-      <label for="budget-max">Transit Budget (USD)</label>
-      <div class="input-row">
-        <input type="number" id="budget-max" style="width: 120px;" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-
-      <label for="notes">Other notes</label>
-      <textarea id="notes" rows="3" placeholder="(e.g. avoid bridges, traveling with kids, etc.)"></textarea>
-
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="(e.g. Alex)" />
-
-      <label for="contact">Email address</label>
-      <input type="email" id="contact" placeholder="(e.g. alex@email.com)" />
+      <!-- Add additional form fields as needed -->
 
       <button type="submit">Send Request</button>
     </form>
   </div>
-  <footer>
-    <a href="#samples">Samples</a>
-    <a href="#about">About</a>
-  </footer>
+
   <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      createSuggestionBox('start-address', 'start-city', 'start-state', 'start-zip', 'start-address');
+      createSuggestionBox('destination-address', 'destination-city', 'destination-state', 'destination-zip', 'destination-address');
+    });
+  </script>
 </body>
 </html>
