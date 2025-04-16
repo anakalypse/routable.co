@@ -5,100 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Routable | Find Your Way</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="overlay">
     <h1>Routable</h1>
     <h2>There <em>is</em> a way. Let’s find it.</h2>
     <form>
+      <!-- Starting Address -->
       <label for="start-address">Starting Address</label>
       <div class="input-row">
-        <input type="text" id="start-address" />
+        <input type="text" id="start-address" placeholder="Full street address" required />
       </div>
       <div class="input-row">
-        <input type="text" id="start-city" placeholder="City" />
-        <input type="text" id="start-state" placeholder="State" />
-        <input type="text" id="start-zip" placeholder="Zip" />
-      </div>
-      <div class="input-row">
-        <label><input type="checkbox" id="start-uncertain" /> Unknown</label>
+        <label style="font-weight: normal;">
+          <input type="checkbox" id="start-uncertain" /> Unknown
+        </label>
         <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled />
       </div>
 
+      <!-- Destination Address -->
       <label for="destination-address">Destination Address</label>
       <div class="input-row">
-        <input type="text" id="destination-address" />
+        <input type="text" id="destination-address" placeholder="Full street address" required />
       </div>
       <div class="input-row">
-        <input type="text" id="destination-city" placeholder="City" />
-        <input type="text" id="destination-state" placeholder="State" />
-        <input type="text" id="destination-zip" placeholder="Zip" />
-      </div>
-      <div class="input-row">
-        <label><input type="checkbox" id="destination-uncertain" /> Unknown</label>
-        <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled />
-      </div>
-
-      <label for="start-time">Leaving Time</label>
-      <div class="input-row">
-        <input type="time" id="start-time" />
-        <label><input type="checkbox" id="time-flexible" /> Flexible</label>
-      </div>
-
-      <label for="end-time">Return Time</label>
-      <div class="input-row">
-        <input type="time" id="end-time" />
-        <label><input type="checkbox" id="return-flexible" /> Flexible</label>
-      </div>
-      <textarea id="time-notes" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
-
-      <label for="trip-type">Trip Type</label>
-      <div class="radio-group">
-        <label><input type="radio" name="tripType" value="oneway" /> One-way</label>
-        <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
-      </div>
-
-      <label for="walking-distance">Comfortable Walking Distance</label>
-      <div class="input-row">
-        <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes)" />
-        <label><input type="checkbox" id="walking-flexible" /> Flexible</label>
-      </div>
-
-      <label>Accessibility / Accommodations</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" /> Wheelchair accessible only</label>
-        <label><input type="checkbox" /> Avoid stairs or steep hills</label>
-        <label><input type="checkbox" /> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" /> Other</label>
-        <textarea placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
-      </div>
-
-      <label for="budget-max">Transit Budget (USD)</label>
-      <div class="input-row">
-        <input type="number" id="budget-max" placeholder="(Max USD)" />
-        <label><input type="checkbox" id="budget-flexible" /> Flexible</label>
-      </div>
-
-      <label for="notes">Other notes</label>
-      <textarea id="notes" placeholder="(e.g. avoid bridges, traveling with kids, etc.)"></textarea>
-
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="(e.g. Alex)" />
-
-      <label for="contact">Email address</label>
-      <input type="email" id="contact" placeholder="(e.g. alex@email.com)" />
-
-      <button type="submit">Send Request</button>
-    </form>
-  </div>
-
-  <script src="script.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      createSuggestionBox('start-address', 'start-city', 'start-state', 'start-zip', 'start-address');
-      createSuggestionBox('destination-address', 'destination-city', 'destination-state', 'destination-zip', 'destination-address');
-    });
-  </script>
-</body>
-</html>
+        <
