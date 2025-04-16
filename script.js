@@ -53,3 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAutocomplete('start-address', 'start-suggestions');
   setupAutocomplete('destination-address', 'destination-suggestions');
 });
+
+/*
+  Add to your CSS file:
+  .wide-input {
+    width: 100%;
+    min-width: 300px;
+    max-width: 100%;
+    padding: 10px;
+    font-size: 1em;
+  }
+*/
