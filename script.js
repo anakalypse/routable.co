@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 .wide-input {
   width: 100%;
-  min-width: 400px;
+  min-width: 600px;
   max-width: 100%;
   padding: 12px;
   font-size: 1.1em;
