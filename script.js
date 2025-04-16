@@ -28,6 +28,7 @@ function setupAutocomplete(inputId, suggestionBoxId) {
           item.onclick = () => {
             input.value = feature.place_name;
             suggestionBox.innerHTML = '';
+            suggestionBox.style.display = 'none';
           };
           suggestionBox.appendChild(item);
         });
