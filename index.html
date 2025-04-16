@@ -8,6 +8,25 @@
   <link rel="stylesheet" href="styles.css">
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+  <style>
+    .autocomplete-suggestions {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 999;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    .autocomplete-suggestion {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .autocomplete-suggestion:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
   <div class="overlay">
@@ -15,8 +34,9 @@
     <h2>There <em>is</em> a way. Let’s find it.</h2>
     <form>
       <label for="start-address">Starting Address</label>
-      <div class="input-row">
-        <input type="text" id="start-address" required />
+      <div class="input-row" style="position: relative;">
+        <input type="text" id="start-address" autocomplete="off" required />
+        <div id="start-suggestions" class="autocomplete-suggestions"></div>
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
@@ -24,8 +44,9 @@
       </div>
 
       <label for="destination-address">Destination Address</label>
-      <div class="input-row">
-        <input type="text" id="destination-address" required />
+      <div class="input-row" style="position: relative;">
+        <input type="text" id="destination-address" autocomplete="off" required />
+        <div id="destination-suggestions" class="autocomplete-suggestions"></div>
       </div>
       <div class="input-row">
         <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
@@ -88,12 +109,14 @@
   <script>
     const mapboxToken = "pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w";
 
-    function setupAutocomplete(inputId) {
+    function setupAutocomplete(inputId, suggestionBoxId) {
       const input = document.getElementById(inputId);
+      const suggestionBox = document.getElementById(suggestionBoxId);
       let controller;
 
       input.addEventListener('input', async () => {
         const query = input.value;
+        suggestionBox.innerHTML = '';
         if (query.length < 3) return;
 
         if (controller) controller.abort();
@@ -103,20 +126,33 @@
           const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&autocomplete=true&limit=5`, { signal: controller.signal });
           const data = await res.json();
 
-          // just show one suggestion: most relevant
           if (data.features.length > 0) {
-            const first = data.features[0];
-            input.value = first.place_name;
+            data.features.forEach(feature => {
+              const item = document.createElement('div');
+              item.className = 'autocomplete-suggestion';
+              item.textContent = feature.place_name;
+              item.onclick = () => {
+                input.value = feature.place_name;
+                suggestionBox.innerHTML = '';
+              };
+              suggestionBox.appendChild(item);
+            });
           }
         } catch (e) {
           if (e.name !== 'AbortError') console.error(e);
         }
       });
+
+      document.addEventListener('click', (e) => {
+        if (!suggestionBox.contains(e.target) && e.target !== input) {
+          suggestionBox.innerHTML = '';
+        }
+      });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      setupAutocomplete('start-address');
-      setupAutocomplete('destination-address');
+      setupAutocomplete('start-address', 'start-suggestions');
+      setupAutocomplete('destination-address', 'destination-suggestions');
     });
   </script>
 </body>
