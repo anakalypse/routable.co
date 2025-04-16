@@ -75,11 +75,7 @@ textarea:disabled {
 
 textarea,
 select,
-button,
-input[type="text"],
-input[type="number"],
-input[type="email"],
-input[type="time"] {
+button {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 10px;
   border: 1px solid #ccc;
@@ -87,16 +83,12 @@ input[type="time"] {
   background-color: #fff;
   transition: all 0.3s ease;
   font-size: 0.95em;
+  width: 100%;
 }
 
-input[type="text"].small,
-input[type="number"].small {
-  width: 100px;
-}
-
-input[type="text"].tiny,
-input[type="number"].tiny {
-  width: 80px;
+input[type="checkbox"],
+input[type="radio"] {
+  margin-right: 8px;
 }
 
 button {
@@ -139,6 +131,7 @@ footer {
     opacity: 0;
     transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
