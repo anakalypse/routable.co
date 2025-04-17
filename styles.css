@@ -1,7 +1,7 @@
 /* Routable Form Styles - Fully Enhanced */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.75);
+  --primary-bg: rgba(255, 255, 255, 0.85);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -39,9 +39,9 @@ body::before {
 .overlay {
   background-color: var(--primary-bg);
   backdrop-filter: blur(14px);
-  max-width: 680px;
+  max-width: 640px;
   margin: 60px auto;
-  padding: 40px 30px;
+  padding: 36px 28px;
   border-radius: 20px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
@@ -90,6 +90,29 @@ form {
 .contact-row input {
   flex: 1;
   min-width: 180px;
+}
+
+.timing-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.time-option {
+  flex: 1;
+  padding: 10px 14px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.time-option.active {
+  background-color: var(--accent);
+  color: white;
+  border-color: var(--accent);
 }
 
 .checkbox-group {
@@ -161,29 +184,6 @@ button:active {
   transform: scale(0.98);
 }
 
-.timing-buttons {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.time-option {
-  flex: 1;
-  padding: 10px 14px;
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.2s;
-}
-
-.time-option.active {
-  background-color: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
-
 .suggestion-box {
   background: #fff;
   border: 1px solid #ccc;
@@ -245,7 +245,7 @@ button:active {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-bg: rgba(20, 20, 20, 0.8);
+    --primary-bg: rgba(20, 20, 20, 0.85);
     --primary-text: #f5f5f5;
     --helper-text: #aaa;
     --accent: #76c7a3;
