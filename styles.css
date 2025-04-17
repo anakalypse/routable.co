@@ -1,7 +1,7 @@
 /* Routable Form Styles - Fully Enhanced */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.75);
+  --primary-bg: rgba(255, 255, 255, 0.6);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -39,9 +39,9 @@ body::before {
 .overlay {
   background-color: var(--primary-bg);
   backdrop-filter: blur(12px);
-  max-width: 800px;
+  max-width: 720px;
   margin: 60px auto;
-  padding: 40px;
+  padding: 36px;
   border-radius: 18px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
@@ -71,7 +71,7 @@ form {
   flex-direction: column;
   gap: 24px;
   animation: fadeIn 1s ease-in-out;
-  font-size: 0.95em;
+  font-size: 0.9em;
 }
 
 .input-group {
@@ -108,7 +108,7 @@ select,
 textarea,
 button {
   font-family: inherit;
-  font-size: 0.95em;
+  font-size: 0.9em;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
