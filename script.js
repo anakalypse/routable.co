@@ -11,12 +11,18 @@ async function fetchSuggestions(query) {
     const response = await fetch(url);
     const data = await response.json();
     console.log('Mapbox API response:', data);
+    if (!data.features || data.features.length === 0) {
+      console.warn('No suggestions returned from Mapbox.');
+    }
     return data.features || [];
   } catch (error) {
     console.error('Failed to fetch suggestions from Mapbox:', error);
     return [];
   }
 }
+
+// Manual test for Mapbox API response
+fetchSuggestions('Seattle').then(results => console.log('Test fetch for Seattle:', results));
 
 // Handle form submission
 document.addEventListener('DOMContentLoaded', () => {
