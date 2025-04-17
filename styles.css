@@ -1,7 +1,7 @@
 /* Routable Form Styles - Fully Enhanced */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.6);
+  --primary-bg: rgba(255, 255, 255, 0.4);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -39,10 +39,10 @@ body::before {
 .overlay {
   background-color: var(--primary-bg);
   backdrop-filter: blur(12px);
-  max-width: 720px;
+  max-width: 680px;
   margin: 60px auto;
-  padding: 36px;
-  border-radius: 18px;
+  padding: 32px;
+  border-radius: 16px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -88,6 +88,11 @@ form {
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.contact-row input {
+  flex: 1;
+  min-width: 150px;
 }
 
 .checkbox-group,
