@@ -43,7 +43,7 @@ body::before {
   margin: 60px auto;
   padding: 30px 24px;
   border-radius: 20px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
