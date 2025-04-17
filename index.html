@@ -26,15 +26,14 @@
       </div>
 
       <div class="input-group">
-        <label for="start_time">Leaving Time</label>
+        <label>Timing Preference</label>
+        <div class="timing-buttons">
+          <button type="button" class="time-option" data-value="leave">Leave at</button>
+          <button type="button" class="time-option" data-value="arrive">Arrive by</button>
+          <button type="button" class="time-option" data-value="last">Last available</button>
+        </div>
+        <input type="hidden" id="time_option" name="time_option" value="leave">
         <input type="time" id="start_time" name="start_time" required>
-
-        <label for="time_option">Clarification</label>
-        <select id="time_option" name="time_option">
-          <option value="leave">Leave at</option>
-          <option value="arrive">Arrive by</option>
-          <option value="last">Last available</option>
-        </select>
       </div>
 
       <div class="input-group">
