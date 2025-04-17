@@ -1,159 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Routable | Find Your Way</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
-  <style>
-    .autocomplete-suggestions {
-      position: absolute;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      z-index: 999;
-      max-height: 150px;
-      overflow-y: auto;
-    }
-    .autocomplete-suggestion {
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    .autocomplete-suggestion:hover {
-      background-color: #f0f0f0;
-    }
-  </style>
-</head>
-<body>
-  <div class="overlay">
-    <h1>Routable</h1>
-    <h2>There <em>is</em> a way. Let’s find it.</h2>
-    <form>
-      <label for="start-address">Starting Address</label>
-      <div class="input-row" style="position: relative;">
-        <input type="text" id="start-address" autocomplete="off" required />
-        <div id="start-suggestions" class="autocomplete-suggestions"></div>
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
-        <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
-      </div>
+<!-- Inside your form -->
+<label for="start-address">Starting Address</label>
+<div class="input-row">
+  <input type="text" id="start-address" class="wide-address" />
+</div>
+<div class="input-row">
+  <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
+  <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
+</div>
 
-      <label for="destination-address">Destination Address</label>
-      <div class="input-row" style="position: relative;">
-        <input type="text" id="destination-address" autocomplete="off" required />
-        <div id="destination-suggestions" class="autocomplete-suggestions"></div>
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
-        <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
-      </div>
-
-      <label for="start-time">Leaving Time</label>
-      <div class="input-row">
-        <input type="time" id="start-time" style="width: 80px;" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="time-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-
-      <label for="end-time">Return Time</label>
-      <div class="input-row">
-        <input type="time" id="end-time" style="width: 80px;" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="return-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-      <textarea id="time-notes" rows="2" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
-
-      <label for="trip-type">Trip Type</label>
-      <div class="radio-group">
-        <label><input type="radio" name="tripType" value="oneway" /> One-way</label>
-        <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
-      </div>
-
-      <label for="walking-distance">Comfortable Walking Distance (e.g. up to 1/4 mile)</label>
-      <div class="input-row">
-        <input type="text" id="walking-distance" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-
-      <label>Accessibility / Accommodations</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" /> Wheelchair accessible only</label>
-        <label><input type="checkbox" /> Avoid stairs or steep hills</label>
-        <label><input type="checkbox" /> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" /> Other</label>
-        <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
-      </div>
-
-      <label for="budget-max">Transit Budget (USD)</label>
-      <div class="input-row">
-        <input type="number" id="budget-max" placeholder="(Max USD)" style="width: 120px;" required />
-        <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" style="margin-left: 10px;" /> Flexible</label>
-      </div>
-
-      <label for="notes">Other notes</label>
-      <textarea id="notes" rows="3" placeholder="(e.g. avoid bridges, traveling with kids, etc.)"></textarea>
-
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="(e.g. Alex)" required />
-
-      <label for="contact">Email address</label>
-      <input type="email" id="contact" placeholder="(e.g. alex@email.com)" required />
-
-      <button type="submit">Send Request</button>
-    </form>
-  </div>
-
-  <script>
-    const mapboxToken = "pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w";
-
-    function setupAutocomplete(inputId, suggestionBoxId) {
-      const input = document.getElementById(inputId);
-      const suggestionBox = document.getElementById(suggestionBoxId);
-      let controller;
-
-      input.addEventListener('input', async () => {
-        const query = input.value;
-        suggestionBox.innerHTML = '';
-        if (query.length < 3) return;
-
-        if (controller) controller.abort();
-        controller = new AbortController();
-
-        try {
-          const res = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&autocomplete=true&limit=5`, { signal: controller.signal });
-          const data = await res.json();
-
-          if (data.features.length > 0) {
-            data.features.forEach(feature => {
-              const item = document.createElement('div');
-              item.className = 'autocomplete-suggestion';
-              item.textContent = feature.place_name;
-              item.onclick = () => {
-                input.value = feature.place_name;
-                suggestionBox.innerHTML = '';
-              };
-              suggestionBox.appendChild(item);
-            });
-          }
-        } catch (e) {
-          if (e.name !== 'AbortError') console.error(e);
-        }
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!suggestionBox.contains(e.target) && e.target !== input) {
-          suggestionBox.innerHTML = '';
-        }
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      setupAutocomplete('start-address', 'start-suggestions');
-      setupAutocomplete('destination-address', 'destination-suggestions');
-    });
-  </script>
-</body>
-</html>
+<label for="destination-address">Destination Address</label>
+<div class="input-row">
+  <input type="text" id="destination-address" class="wide-address" />
+</div>
+<div class="input-row">
+  <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
+  <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
+</div>
