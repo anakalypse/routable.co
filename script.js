@@ -1,153 +1,128 @@
-// Routable JavaScript with city type detection and distance-based pricing (US only)
+// Routable JS - Includes Address Lookup, Form Behavior, and Dynamic Pricing
 
-const METRO_ZIP_CODES = new Set([
-  // Expanded zip code prefixes for major US metro areas (alphabetized)
-  '021', '022', // Boston, MA
-  '100', '101', '104', // New York, NY
-  '191', // Philadelphia, PA
-  '200', '203', '204', // Washington, DC
-  '276', // Raleigh-Durham, NC
-  '282', // Charlotte, NC
-  '300', '303', '309', // Atlanta, GA
-  '328', '331', '333', // Orlando & Miami, FL
-  '336', '337', // Tampa Bay, FL
-  '372', // Nashville, TN
-  '430', '432', '441', '442', '443', // Columbus & Cleveland, OH
-  '452', // Cincinnati, OH
-  '462', // Indianapolis, IN
-  '480', '481', '482', // Detroit, MI
-  '503', // Des Moines, IA
-  '554', // Minneapolis, MN
-  '606', '607', // Chicago, IL
-  '631', // St. Louis, MO
-  '641', // Kansas City, MO
-  '701', // New Orleans, LA
-  '722', // Little Rock, AR
-  '731', // Oklahoma City, OK
-  '750', '752', '753', '760', '761', // Dallas-Fort Worth, TX
-  '770', '772', // Houston, TX
-  '782', // San Antonio, TX
-  '787', // Austin, TX
-  '802', '803', // Denver, CO
-  '841', // Salt Lake City, UT
-  '850', '852', '853', '857', // Phoenix & Tucson, AZ
-  '871', // Albuquerque, NM
-  '891', // Las Vegas, NV
-  '900', '901', '902', '904', '905', '906', '907', '908', '910', '913', '914', '915', // Los Angeles, CA
-  '920', '921', '922', // San Diego, CA
-  '941', '943', '944', '945', '946', '947', '948', '949', '950', '951', '953', // San Francisco Bay Area, San Jose, CA
-  '956', '958', // Sacramento, CA
-  '972', '973', // Portland, OR
-  '980', '981', '982', '983', '984', // Seattle-Tacoma, WA incl. Federal Way
-  '995' // Anchorage, AK
+const mapboxToken = 'pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w';
+
+const metroZips = new Set([
+  // Expanded list of metro area ZIP codes (alphabetized by ZIP prefix)
+  '02108', '02109', '02110', '02111', '02113', '02114', '02115', '02116', '02118', '02119', '02120', '02121',
+  '10001', '10002', '10003', '10004', '10005', '10006', '10007', '10009', '10010', '10011', '10012', '10013', '10014',
+  '20001', '20002', '20003', '20004', '20005', '20006', '20007', '20008', '20009', '20010',
+  '30303', '30305', '30306', '30307', '30308', '30309', '30310', '30311', '30312',
+  '33101', '33125', '33126', '33127', '33128', '33129', '33130', '33131', '33132', '33133', '33134',
+  '37203', '37206', '37207', '37208', '37209', '37210', '37211', '37212',
+  '48201', '48202', '48204', '48206', '48207', '48208', '48209', '48210', '48211',
+  '60601', '60602', '60603', '60604', '60605', '60606', '60607', '60608', '60609', '60610',
+  '75201', '75202', '75203', '75204', '75205', '75206', '75207', '75208', '75209', '75210',
+  '78701', '78702', '78703', '78704', '78705', '78721', '78722', '78723',
+  '80202', '80203', '80204', '80205', '80206', '80207', '80209', '80210',
+  '85004', '85006', '85007', '85008', '85009', '85012', '85013', '85014', '85015',
+  '90001', '90002', '90003', '90004', '90005', '90006', '90007', '90008', '90010', '90011',
+  '94102', '94103', '94104', '94105', '94107', '94108', '94109', '94110', '94111', '94112', '94114',
+  '98001', '98002', '98003', '98023', '98030', '98031', '98032', '98047', '98092',
+  '98101', '98102', '98103', '98104', '98105', '98106', '98107', '98108', '98109', '98115', '98116',
+  '98117', '98118', '98119', '98121', '98122', '98125', '98126', '98133', '98134', '98136', '98144',
+  '98146', '98148', '98154', '98155', '98158', '98161', '98164', '98166', '98168', '98174', '98177',
+  '98178', '98188', '98195', '98198', '98199', '98402', '98403', '98405', '98406', '98407', '98408'
 ]);
 
-const METRO_THRESHOLD_MILES = 10;
-const mapboxApiKey = "pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w";
+function setupSuggestionBox(inputId) {
+  const input = document.getElementById(inputId);
+  const suggestionBox = document.createElement('div');
+  suggestionBox.className = 'suggestion-box';
+  input.parentNode.appendChild(suggestionBox);
 
-function isZipMetro(zip) {
-  return METRO_ZIP_CODES.has(zip.substring(0, 3));
+  input.addEventListener('input', async () => {
+    const query = input.value;
+    if (query.length < 3) return (suggestionBox.innerHTML = '');
+
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+      query
+    )}.json?access_token=${mapboxToken}&autocomplete=true&country=US`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      suggestionBox.innerHTML = '';
+
+      data.features.forEach((place) => {
+        const item = document.createElement('div');
+        item.className = 'suggestion-item';
+        item.textContent = place.place_name;
+        item.addEventListener('click', () => {
+          input.value = place.place_name;
+          suggestionBox.innerHTML = '';
+          input.dataset.lat = place.center[1];
+          input.dataset.lon = place.center[0];
+          input.dataset.zip = extractZip(place);
+        });
+        suggestionBox.appendChild(item);
+      });
+    } catch (err) {
+      console.error('Suggestion error:', err);
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!suggestionBox.contains(e.target) && e.target !== input) {
+      suggestionBox.innerHTML = '';
+    }
+  });
 }
 
-function extractZipCode(feature) {
-  return feature.context?.find(c => c.id.startsWith("postcode"))?.text || "";
+function extractZip(place) {
+  const zip = place.context?.find((c) => c.id.includes('postcode'));
+  return zip ? zip.text : '';
 }
 
-function extractCity(feature) {
-  return feature.context?.find(c => c.id.startsWith("place"))?.text || "";
+function calculateMileage(lat1, lon1, lat2, lon2) {
+  const toRad = (x) => (x * Math.PI) / 180;
+  const R = 3958.8; // miles
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
 }
 
-function extractState(feature) {
-  return feature.context?.find(c => c.id.startsWith("region"))?.text || "";
+function estimateCost(miles, zip1, zip2) {
+  const bothMetro = metroZips.has(zip1) && metroZips.has(zip2);
+  if (miles <= 10 && bothMetro) return '$2';
+  if (miles <= 10) return '$5';
+  if (miles <= 25 && bothMetro) return '$10';
+  if (miles <= 25) return '$15';
+  return bothMetro ? '$20' : '$30';
 }
 
-function extractFullAddress(feature) {
-  return feature.place_name;
-}
+function setupPricing() {
+  const start = document.getElementById('start-address');
+  const dest = document.getElementById('destination-address');
+  const resultBox = document.createElement('div');
+  resultBox.className = 'message';
+  start.parentNode.appendChild(resultBox);
 
-async function geocodeAddress(address) {
-  const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${mapboxApiKey}&country=US`;
-  const response = await fetch(endpoint);
-  const data = await response.json();
-  if (data.features.length > 0) {
-    return data.features[0];
-  }
-  return null;
-}
-
-async function calculateDistanceMiles(fromCoords, toCoords) {
-  const endpoint = `https://api.mapbox.com/directions/v5/mapbox/driving/${fromCoords[0]},${fromCoords[1]};${toCoords[0]},${toCoords[1]}?access_token=${mapboxApiKey}&overview=false`;
-  const response = await fetch(endpoint);
-  const data = await response.json();
-  if (data.routes.length > 0) {
-    return data.routes[0].distance / 1609.34; // meters to miles
-  }
-  return null;
-}
-
-async function calculatePrice(startAddress, endAddress) {
-  const startFeature = await geocodeAddress(startAddress);
-  const endFeature = await geocodeAddress(endAddress);
-
-  if (!startFeature || !endFeature) return "Unable to calculate";
-
-  const startZip = extractZipCode(startFeature);
-  const endZip = extractZipCode(endFeature);
-
-  const startMetro = isZipMetro(startZip);
-  const endMetro = isZipMetro(endZip);
-
-  const fromCoords = startFeature.center;
-  const toCoords = endFeature.center;
-
-  const miles = await calculateDistanceMiles(fromCoords, toCoords);
-
-  let price = 0;
-  if (startMetro && endMetro) {
-    price = miles <= METRO_THRESHOLD_MILES ? 5 : 10;
-  } else if (!startMetro || !endMetro) {
-    price = miles <= METRO_THRESHOLD_MILES ? 10 : 20;
-  }
-  return `$${price.toFixed(2)} (approx. ${miles.toFixed(1)} mi)`;
-}
-
-function updatePriceOnChange() {
-  const priceOutput = document.getElementById("price");
-  const startInput = document.getElementById("start-address");
-  const endInput = document.getElementById("destination-address");
-
-  const handler = async () => {
-    const startAddress = startInput.value;
-    const endAddress = endInput.value;
-    if (startAddress && endAddress) {
-      priceOutput.value = "Calculating...";
-      const price = await calculatePrice(startAddress, endAddress);
-      priceOutput.value = price;
+  const handler = () => {
+    const lat1 = parseFloat(start.dataset.lat);
+    const lon1 = parseFloat(start.dataset.lon);
+    const lat2 = parseFloat(dest.dataset.lat);
+    const lon2 = parseFloat(dest.dataset.lon);
+    const zip1 = start.dataset.zip;
+    const zip2 = dest.dataset.zip;
+    if (lat1 && lon1 && lat2 && lon2 && zip1 && zip2) {
+      const miles = calculateMileage(lat1, lon1, lat2, lon2);
+      const cost = estimateCost(miles, zip1, zip2);
+      resultBox.textContent = `Estimated Cost: ${cost} (${miles.toFixed(1)} mi)`;
+      resultBox.classList.add('success');
     }
   };
 
-  startInput.addEventListener("change", handler);
-  endInput.addEventListener("change", handler);
+  start.addEventListener('change', handler);
+  dest.addEventListener('change', handler);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.querySelector("form");
-  const priceOutput = document.getElementById("price");
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const startAddress = document.getElementById("start-address").value;
-    const destinationAddress = document.getElementById("destination-address").value;
-
-    if (!startAddress || !destinationAddress) {
-      alert("Please enter both starting and destination addresses.");
-      return;
-    }
-
-    priceOutput.value = "Calculating...";
-    const price = await calculatePrice(startAddress, destinationAddress);
-    priceOutput.value = price;
-  });
-
-  updatePriceOnChange();
+document.addEventListener('DOMContentLoaded', () => {
+  setupSuggestionBox('start-address');
+  setupSuggestionBox('destination-address');
+  setupPricing();
 });
