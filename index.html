@@ -26,25 +26,31 @@
       </div>
 
       <div class="input-group">
-        <label>Timing Preference</label>
-        <div class="timing-buttons">
-          <button type="button" class="time-option" data-value="leave">Leave at</button>
-          <button type="button" class="time-option" data-value="arrive">Arrive by</button>
-          <button type="button" class="time-option" data-value="last">Last available</button>
-        </div>
-        <input type="hidden" id="time_option" name="time_option" value="leave">
-        <input type="time" id="start_time" name="start_time" required>
-      </div>
-
-      <div class="input-group">
-        <label for="return_time">Return Time</label>
-        <input type="time" id="return_time" name="return_time">
-      </div>
-
-      <div class="input-group">
         <label>Trip Type</label>
         <label><input type="radio" name="trip_type" value="oneway"> One-way</label>
         <label><input type="radio" name="trip_type" value="roundtrip" checked> Round-trip</label>
+      </div>
+
+      <div class="input-group">
+        <label>Departure Time Preference</label>
+        <div class="timing-buttons" id="departure-options">
+          <button type="button" class="time-option" data-group="departure" data-value="leave">Leave at</button>
+          <button type="button" class="time-option" data-group="departure" data-value="arrive">Arrive by</button>
+          <button type="button" class="time-option" data-group="departure" data-value="last">Last available</button>
+        </div>
+        <input type="hidden" id="departure_option" name="departure_option" value="leave">
+        <input type="time" id="start_time" name="start_time" required>
+      </div>
+
+      <div class="input-group" id="return-time-section">
+        <label>Return Time Preference</label>
+        <div class="timing-buttons" id="return-options">
+          <button type="button" class="time-option" data-group="return" data-value="leave">Leave at</button>
+          <button type="button" class="time-option" data-group="return" data-value="arrive">Arrive by</button>
+          <button type="button" class="time-option" data-group="return" data-value="last">Last available</button>
+        </div>
+        <input type="hidden" id="return_option" name="return_option" value="leave">
+        <input type="time" id="return_time" name="return_time">
       </div>
 
       <div class="checkbox-group">
