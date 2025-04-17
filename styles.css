@@ -1,7 +1,7 @@
 /* Routable Form Styles - Fully Enhanced */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.96);
+  --primary-bg: rgba(255, 255, 255, 0.94);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -38,8 +38,8 @@ body::before {
 
 .overlay {
   background-color: var(--primary-bg);
-  backdrop-filter: blur(16px);
-  max-width: 580px;
+  backdrop-filter: blur(18px);
+  max-width: 560px;
   margin: 60px auto;
   padding: 30px 24px;
   border-radius: 20px;
@@ -50,7 +50,7 @@ h1 {
   text-align: center;
   font-family: 'Kanit', sans-serif;
   font-weight: 400;
-  font-size: 2.4em;
+  font-size: 2.3em;
   color: #2e2e2e;
   letter-spacing: 0.6px;
   font-style: italic;
@@ -60,7 +60,7 @@ h1 {
 h2 {
   text-align: center;
   font-family: 'Playfair Display', serif;
-  font-size: 1.3em;
+  font-size: 1.2em;
   font-weight: 400;
   margin-top: 0;
   color: #444;
@@ -71,7 +71,7 @@ form {
   flex-direction: column;
   gap: 20px;
   animation: fadeIn 1s ease-in-out;
-  font-size: 0.9em;
+  font-size: 0.88em;
 }
 
 .input-group {
@@ -108,7 +108,7 @@ select,
 textarea,
 button {
   font-family: inherit;
-  font-size: 1em;
+  font-size: 0.95em;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -227,7 +227,7 @@ button:active {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-bg: rgba(30, 30, 30, 0.85);
+    --primary-bg: rgba(40, 40, 40, 0.85);
     --primary-text: #f5f5f5;
     --helper-text: #aaa;
     --accent: #76c7a3;
