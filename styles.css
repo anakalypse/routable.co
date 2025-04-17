@@ -1,4 +1,5 @@
-/* Base form styles */
+/* Routable Styles */
+
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -61,13 +62,6 @@ form {
   align-items: center;
 }
 
-.checkbox-group,
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
 input:disabled, textarea:disabled {
   background-color: #eaeaea;
   opacity: 0.7;
@@ -90,33 +84,59 @@ footer {
   100% { opacity: 1; transform: translateY(0); }
 }
 
-.suggestion-box {
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  position: absolute;
-  z-index: 1000;
-  max-height: 150px;
-  overflow-y: auto;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  font-size: 0.9em;
-}
-
-.suggestion-item,
 .autocomplete-suggestion {
   padding: 8px 12px;
   cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
 }
 
-.suggestion-item:hover,
 .autocomplete-suggestion:hover {
   background-color: #f0f0f0;
 }
 
-.wide-input {
+.wide-address {
   width: 100%;
-  min-width: 300px;
-  max-width: 100%;
+  max-width: 600px;
+}
+
+textarea,
+select,
+button {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   padding: 10px;
-  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  font-size: 0.95em;
+  width: 100%;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin-right: 8px;
+}
+
+button {
+  background-color: #4b6043;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #3a4d35;
+  transform: translateY(-2px);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #4b6043;
+  box-shadow: 0 0 6px rgba(75, 96, 67, 0.3);
 }
