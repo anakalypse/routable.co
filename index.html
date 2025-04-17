@@ -1,88 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Routable | Find Your Way</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script defer src="https://unpkg.com/@supabase/supabase-js"></script>
-  <script defer src="script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="overlay">
     <h1>Routable</h1>
     <h2>There <em>is</em> a way. Let’s find it.</h2>
     <form id="routable-form">
-      <label for="start-address">Starting Address</label>
-      <input type="text" id="start-address" name="start_address" required />
-
-      <label for="destination-address">Destination Address</label>
-      <input type="text" id="destination-address" name="destination_address" required />
-
-      <label for="start-time">Leaving Time</label>
-      <div class="input-row">
-        <input type="time" id="start-time" name="start_time" required />
-        <label><input type="checkbox" id="time-flexible" /> Flexible</label>
+      <div class="input-group">
+        <label for="start_address">Starting Address</label>
+        <input type="text" id="start_address" name="start_address" required>
       </div>
-
-      <label for="end-time">Return Time</label>
-      <div class="input-row">
-        <input type="time" id="end-time" name="return_time" required />
-        <label><input type="checkbox" id="return-flexible" /> Flexible</label>
+      <div class="input-group">
+        <label for="destination_address">Destination Address</label>
+        <input type="text" id="destination_address" name="destination_address" required>
       </div>
-
-      <label for="time-notes">Timing Notes</label>
-      <textarea id="time-notes" name="time_notes"></textarea>
-
-      <label for="trip-type">Trip Type</label>
-      <div class="radio-group">
-        <label><input type="radio" name="trip_type" value="oneway" /> One-way</label>
-        <label><input type="radio" name="trip_type" value="roundtrip" /> Round-trip</label>
+      <div class="input-group">
+        <label for="start_time">Leaving Time</label>
+        <input type="time" id="start_time" name="start_time" required>
+        <label><input type="checkbox" id="time-flexible"> Flexible</label>
       </div>
-
-      <label for="walking-distance">Comfortable Walking Distance</label>
-      <div class="input-row">
-        <input type="text" id="walking-distance" name="walking_distance" required />
-        <label><input type="checkbox" id="walking-flexible" /> Flexible</label>
+      <div class="input-group">
+        <label for="return_time">Return Time</label>
+        <input type="time" id="return_time" name="return_time">
+        <label><input type="checkbox" id="return-flexible"> Flexible</label>
       </div>
-
-      <label>Accessibility / Accommodations</label>
+      <div class="input-group">
+        <label for="time_notes">Time Clarifications</label>
+        <textarea id="time_notes" name="time_notes"></textarea>
+      </div>
+      <div class="input-group">
+        <label>Trip Type</label>
+        <label><input type="radio" name="trip_type" value="oneway"> One-way</label>
+        <label><input type="radio" name="trip_type" value="roundtrip" checked> Round-trip</label>
+      </div>
+      <div class="input-group">
+        <label for="walking_distance">Comfortable Walking Distance</label>
+        <input type="text" id="walking_distance" name="walking_distance" required>
+        <label><input type="checkbox" id="walking-flexible"> Flexible</label>
+      </div>
       <div class="checkbox-group">
-        <label><input type="checkbox" name="accessibility" value="wheelchair" /> Wheelchair accessible only</label>
-        <label><input type="checkbox" name="accessibility" value="stairs" /> Avoid stairs or steep hills</label>
-        <label><input type="checkbox" name="accessibility" value="indoor" /> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" name="accessibility" value="other" /> Other</label>
+        <label>Accessibility / Accommodations</label>
+        <label><input type="checkbox" name="accessibility" value="wheelchair"> Wheelchair accessible only</label>
+        <label><input type="checkbox" name="accessibility" value="stairs"> Avoid stairs or steep hills</label>
+        <label><input type="checkbox" name="accessibility" value="indoor"> Prefer indoor waiting areas</label>
+        <label><input type="checkbox" name="accessibility" value="other"> Other</label>
       </div>
-
-      <label for="budget-max">Transit Budget (USD)</label>
-      <div class="input-row">
-        <input type="number" id="budget-max" name="budget_max" required />
-        <label><input type="checkbox" id="budget-flexible" /> Flexible</label>
+      <div class="input-group">
+        <label for="budget_max">Transit Budget (USD)</label>
+        <input type="number" id="budget_max" name="budget_max" required>
+        <label><input type="checkbox" id="budget-flexible"> Flexible</label>
       </div>
-
-      <label for="notes">Other Notes</label>
-      <textarea id="notes" name="notes"></textarea>
-
-      <label for="deadline">When do you need route by?</label>
-      <input type="date" id="deadline" name="deadline" />
-      <label><input type="checkbox" id="deadline-flexible" /> Flexible</label>
-      <textarea id="urgency-notes" name="urgency_notes" placeholder="Clarify if needed"></textarea>
-
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required />
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="phone">Phone</label>
-      <input type="tel" id="phone" name="phone" required />
-
-      <label for="language">Preferred Language for Report</label>
-      <input type="text" id="language" name="language" />
-
-      <div class="message" id="form-message"></div>
+      <div class="input-group">
+        <label for="notes">Other Notes</label>
+        <textarea id="notes" name="notes"></textarea>
+      </div>
+      <div class="input-group">
+        <label for="deadline">When do you need this route by?</label>
+        <input type="date" id="deadline" name="deadline">
+        <label><input type="checkbox" id="deadline-flexible"> Flexible</label>
+        <textarea id="urgency_notes" name="urgency_notes" placeholder="If flexible, add clarification here."></textarea>
+      </div>
+      <div class="input-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="input-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone">
+      </div>
+      <div class="input-group">
+        <label for="language">Preferred Language (for report)</label>
+        <input type="text" id="language" name="language">
+      </div>
       <button type="submit">Send Request</button>
+      <div id="form-message" class="message"></div>
     </form>
   </div>
+  <script src="form.js"></script>
 </body>
 </html>
