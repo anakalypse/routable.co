@@ -3,13 +3,17 @@ const SUPABASE_URL = 'https://zszjyfswpplbhjxievhz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpzemp5ZnN3cHBsYmhqeGlldmh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4NTU5ODgsImV4cCI6MjA2MDQzMTk4OH0.5oh10-d4zwemTGZCEwfEeXs5C0gqjZid5HF6sDng7j0';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Function to fetch address suggestions from Mapbox
+// Mapbox token
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjbTlrdGEzdXYwdGY0MmxwbjEzN2dzMm0zIn0.BvsUMTwPUGngjhTb9fkazA';
+
+// Fetch suggestions from Mapbox
 async function fetchSuggestions(query) {
-  const MAPBOX_TOKEN = 'pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjbTlrdGEzdXYwdGY0MmxwbjEzN2dzMm0zIn0.BvsUMTwPUGngjhTb9fkazA';
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&types=address&limit=5&access_token=${MAPBOX_TOKEN}`;
   try {
+    console.log("Mapbox query URL:", url);
     const response = await fetch(url);
     const data = await response.json();
+    console.log('Mapbox API response:', data);
     return data.features || [];
   } catch (error) {
     console.error('Failed to fetch suggestions from Mapbox:', error);
@@ -17,10 +21,12 @@ async function fetchSuggestions(query) {
   }
 }
 
-// Initialize autosuggest behavior for all address input fields
-function initAutosuggest(inputId, suggestionBoxId) {
+// Initialize autosuggestion boxes
+function setupAutosuggest(inputId, suggestionBoxId) {
   const input = document.getElementById(inputId);
   const suggestionBox = document.getElementById(suggestionBoxId);
+
+  if (!input || !suggestionBox) return;
 
   input.addEventListener('input', async () => {
     const query = input.value.trim();
@@ -56,13 +62,13 @@ function initAutosuggest(inputId, suggestionBoxId) {
   });
 }
 
-// Handle form submission
+// DOM Load logic
 document.addEventListener('DOMContentLoaded', () => {
-  initAutosuggest('start-address', 'start-suggestions');
-  initAutosuggest('destination-address', 'destination-suggestions');
-
   const form = document.getElementById('routable-form');
   const messageDiv = document.getElementById('form-message');
+
+  setupAutosuggest('start-address', 'start-suggestions');
+  setupAutosuggest('destination-address', 'destination-suggestions');
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -82,11 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
     form.querySelectorAll('input[name="accessibility"]:checked').forEach(cb => accessibility.push(cb.value));
     data.accessibility = accessibility.length ? accessibility : null;
 
+    console.log('Form data to be submitted:', data);
+
     const { error } = await supabase.from('requests').insert([data]);
 
     if (error) {
       messageDiv.textContent = 'Submission failed. Please try again later.';
       messageDiv.className = 'message error';
+      console.error(error);
     } else {
       messageDiv.textContent = 'Your request was sent successfully!';
       messageDiv.className = 'message success';
@@ -96,8 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const deadlineFlexible = document.getElementById('deadline-flexible');
   const deadlineField = document.getElementById('deadline');
-  deadlineFlexible.addEventListener('change', () => {
-    deadlineField.disabled = deadlineFlexible.checked;
-    deadlineField.required = !deadlineFlexible.checked;
-  });
+  if (deadlineFlexible && deadlineField) {
+    deadlineFlexible.addEventListener('change', () => {
+      deadlineField.disabled = deadlineFlexible.checked;
+      deadlineField.required = !deadlineFlexible.checked;
+    });
+  }
 });
