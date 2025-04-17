@@ -39,9 +39,9 @@ body::before {
 .overlay {
   background-color: var(--primary-bg);
   backdrop-filter: blur(14px);
-  max-width: 760px;
+  max-width: 680px;
   margin: 60px auto;
-  padding: 50px 40px;
+  padding: 40px 30px;
   border-radius: 20px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
