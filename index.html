@@ -100,8 +100,8 @@
         </div>
       </fieldset>
 
-      <label for="language">Preferred Language for Report</label>
-      <input type="text" id="language" placeholder="(e.g. English, Spanish)" />
+      <label for="notes">Other notes</label>
+      <textarea id="notes" rows="3" placeholder="(e.g. avoid bridges, traveling with kids, etc.)"></textarea>
 
       <label for="urgency">When do you need this route by?</label>
       <select id="urgency">
@@ -112,19 +112,19 @@
 
       <input type="text" id="urgency-notes" placeholder="(If flexible, clarify here)" style="margin-top: 6px;" />
 
-      <label for="phone">Phone number (optional)</label>
-      <input type="tel" id="phone" placeholder="(e.g. 555-123-4567)" />
-
-      <label for="notes">Other notes</label>
-      <textarea id="notes" rows="3" placeholder="(e.g. avoid bridges, traveling with kids, etc.)"></textarea>
-
       <fieldset>
         <legend>Contact</legend>
         <label for="name">Name</label>
-        <input type="text" id="name" placeholder="(e.g. Alex)" />
+        <input type="text" id="name" />
 
         <label for="contact">Email address</label>
-        <input type="email" id="contact" placeholder="(e.g. alex@email.com)" />
+        <input type="email" id="contact" />
+
+        <label for="phone">Phone number (optional)</label>
+        <input type="tel" id="phone" />
+
+        <label for="language">Preferred Language for Report</label>
+        <input type="text" id="language" />
       </fieldset>
 
       <button type="submit">Send Request</button>
