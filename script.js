@@ -8,6 +8,7 @@ async function fetchSuggestions(query) {
   const MAPBOX_TOKEN = 'pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjbTlrdGEzdXYwdGY0MmxwbjEzN2dzMm0zIn0.BvsUMTwPUGngjhTb9fkazA';
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&types=address&limit=5&access_token=${MAPBOX_TOKEN}`;
   try {
+    console.log("Mapbox query URL:", url);
     const response = await fetch(url);
     const data = await response.json();
     console.log('Mapbox API response:', data);
