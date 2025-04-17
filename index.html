@@ -6,129 +6,103 @@
   <title>Routable | Find Your Way</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
 </head>
 <body>
   <div class="overlay">
     <h1>Routable</h1>
     <h2>There <em>is</em> a way. Let’s find it.</h2>
-    <form>
+    <form id="route-form">
       <fieldset>
-        <legend>Starting Point</legend>
-        <label for="start-address">Address</label>
+        <legend>Trip Details</legend>
+        <label for="start-address">Starting Address</label>
         <div class="input-row">
-          <input type="text" id="start-address" class="wide-address" aria-describedby="start-uncertain-notes" />
+          <input type="text" id="start-address" name="start-address" required />
+          <label><input type="checkbox" id="start-uncertain"> Unknown</label>
         </div>
-        <div class="input-row">
-          <label><input type="checkbox" id="start-uncertain" /> Unknown</label>
-          <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled />
-        </div>
-      </fieldset>
+        <textarea id="start-uncertain-notes" placeholder="Cross streets, landmarks..." disabled></textarea>
 
-      <fieldset>
-        <legend>Destination</legend>
-        <label for="destination-address">Address</label>
+        <label for="destination-address">Destination Address</label>
         <div class="input-row">
-          <input type="text" id="destination-address" class="wide-address" aria-describedby="destination-uncertain-notes" />
+          <input type="text" id="destination-address" name="destination-address" required />
+          <label><input type="checkbox" id="destination-uncertain"> Unknown</label>
         </div>
-        <div class="input-row">
-          <label><input type="checkbox" id="destination-uncertain" /> Unknown</label>
-          <input type="text" id="destination-uncertain-notes" placeholder="(clarify here - e.g. cross streets, nearby landmark)" disabled />
-        </div>
-      </fieldset>
+        <textarea id="destination-uncertain-notes" placeholder="Cross streets, landmarks..." disabled></textarea>
 
-      <fieldset>
-        <legend>Time Preferences</legend>
-        <label for="travel-date">Date of Travel</label>
-        <input type="date" id="travel-date" />
+        <label for="trip-type">Trip Type</label>
+        <div class="radio-group">
+          <label><input type="radio" name="tripType" value="oneway" checked> One-way</label>
+          <label><input type="radio" name="tripType" value="roundtrip"> Round-trip</label>
+        </div>
 
         <label for="start-time">Leaving Time</label>
         <div class="input-row">
-          <input type="time" id="start-time" required style="width: 80px;" />
-          <label><input type="checkbox" id="time-flexible" /> Flexible</label>
+          <input type="time" id="start-time" required>
+          <label><input type="checkbox" id="time-flexible"> Flexible</label>
         </div>
 
         <label for="end-time">Return Time</label>
         <div class="input-row">
-          <input type="time" id="end-time" required style="width: 80px;" />
-          <label><input type="checkbox" id="return-flexible" /> Flexible</label>
+          <input type="time" id="end-time">
+          <label><input type="checkbox" id="return-flexible"> Flexible</label>
         </div>
 
-        <textarea id="time-notes" rows="2" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
-      </fieldset>
+        <textarea id="time-notes" placeholder="Prefer early afternoon? Avoid rush hour?"></textarea>
 
-      <fieldset>
-        <legend>Trip Type</legend>
-        <div class="radio-group">
-          <label><input type="radio" name="tripType" value="oneway" /> One-way</label>
-          <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Preferred Transit Modes</legend>
-        <div class="checkbox-group">
-          <label><input type="checkbox" /> Bus</label>
-          <label><input type="checkbox" /> Light rail / train</label>
-          <label><input type="checkbox" /> Ferry</label>
-          <label><input type="checkbox" /> Shuttle / ride service</label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Mobility & Budget</legend>
         <label for="walking-distance">Comfortable Walking Distance</label>
         <div class="input-row">
-          <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" required />
-          <label><input type="checkbox" id="walking-flexible" /> Flexible</label>
+          <input type="text" id="walking-distance" required>
+          <label><input type="checkbox" id="walking-flexible"> Flexible</label>
         </div>
 
-        <label>Transit Budget (USD)</label>
-        <div class="input-row">
-          <input type="number" id="budget-max" placeholder="(Max USD)" required style="width: 120px;" />
-          <label><input type="checkbox" id="budget-flexible" /> Flexible</label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Accessibility / Accommodations</legend>
+        <label>Accessibility / Accommodations</label>
         <div class="checkbox-group">
-          <label><input type="checkbox" /> Wheelchair accessible only</label>
-          <label><input type="checkbox" /> Avoid stairs or steep hills</label>
-          <label><input type="checkbox" /> Prefer indoor waiting areas</label>
-          <label><input type="checkbox" /> Other</label>
-          <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
+          <label><input type="checkbox"> Wheelchair accessible only</label>
+          <label><input type="checkbox"> Avoid stairs or steep hills</label>
+          <label><input type="checkbox"> Prefer indoor waiting areas</label>
+          <label><input type="checkbox"> Other</label>
+        </div>
+        <textarea placeholder="Need scent-free environment? Low lighting?"></textarea>
+
+        <label for="budget-max">Transit Budget (USD)</label>
+        <div class="input-row">
+          <input type="number" id="budget-max" required>
+          <label><input type="checkbox" id="budget-flexible"> Flexible</label>
         </div>
       </fieldset>
 
-      <label for="notes">Other notes</label>
-      <textarea id="notes" rows="3" placeholder="(e.g. avoid bridges, traveling with kids, etc.)"></textarea>
+      <fieldset>
+        <legend>Notes & Timing</legend>
+        <label for="notes">Other Notes</label>
+        <textarea id="notes" rows="3" placeholder="Avoid bridges? Traveling with kids?"></textarea>
 
-      <label for="urgency">When do you need this route by?</label>
-      <select id="urgency">
-        <option value="24h">Within 24 hours</option>
-        <option value="48h">Within 48 hours</option>
-        <option value="flexible">Flexible</option>
-      </select>
-
-      <input type="text" id="urgency-notes" placeholder="(If flexible, clarify here)" style="margin-top: 6px;" />
+        <label for="due-by">When do you need this route by?</label>
+        <div class="input-row">
+          <input type="date" id="due-by" required>
+          <label><input type="checkbox" id="due-flexible"> Flexible</label>
+        </div>
+        <textarea id="due-notes" placeholder="Deadline context? Flexible how?"></textarea>
+      </fieldset>
 
       <fieldset>
-        <legend>Contact</legend>
+        <legend>Contact Info</legend>
         <label for="name">Name</label>
-        <input type="text" id="name" />
+        <input type="text" id="name" required>
 
-        <label for="contact">Email address</label>
-        <input type="email" id="contact" />
+        <label for="contact">Email</label>
+        <input type="email" id="contact" required>
 
-        <label for="phone">Phone number (optional)</label>
-        <input type="tel" id="phone" />
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone">
 
         <label for="language">Preferred Language for Report</label>
-        <input type="text" id="language" />
+        <select id="language">
+          <option value="english">English</option>
+          <option value="spanish">Spanish</option>
+          <option value="french">French</option>
+          <option value="other">Other</option>
+        </select>
       </fieldset>
-
-      <label for="price">Estimated Price (auto-filled)</label>
-      <input type="text" id="price" readonly />
 
       <button type="submit">Send Request</button>
     </form>
