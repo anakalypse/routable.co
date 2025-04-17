@@ -1,7 +1,7 @@
 /* Routable Form Styles - Fully Enhanced */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.85);
+  --primary-bg: rgba(255, 255, 255, 0.75);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -38,21 +38,21 @@ body::before {
 
 .overlay {
   background-color: var(--primary-bg);
-  backdrop-filter: blur(18px);
-  max-width: 560px;
+  backdrop-filter: blur(12px);
+  max-width: 800px;
   margin: 60px auto;
-  padding: 30px 24px;
-  border-radius: 20px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
   text-align: center;
   font-family: 'Kanit', sans-serif;
   font-weight: 400;
-  font-size: 2.3em;
+  font-size: 2.4em;
   color: #2e2e2e;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.7px;
   font-style: italic;
   margin-bottom: 0.2em;
 }
@@ -69,38 +69,38 @@ h2 {
 form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   animation: fadeIn 1s ease-in-out;
-  font-size: 0.88em;
+  font-size: 0.95em;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  position: relative;
 }
 
 .input-row,
-.contact-row,
-.time-range-row {
+.time-range-row,
+.contact-row {
   display: flex;
+  gap: 12px;
   flex-wrap: wrap;
-  gap: 16px;
-  justify-content: space-between;
   align-items: center;
 }
 
-.contact-row input,
-.time-range-row select,
-.time-range-row input[type="time"] {
-  flex: 1;
-  min-width: 160px;
-}
-
-.checkbox-group {
+.checkbox-group,
+.radio-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+input:disabled,
+textarea:disabled {
+  background-color: #f5f5f5;
+  opacity: 0.7;
 }
 
 input,
@@ -117,8 +117,18 @@ button {
   width: 100%;
 }
 
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+  min-width: 150px;
+  flex: 1;
+}
+
 input[type="time"] {
-  width: 130px;
+  width: 140px;
 }
 
 input[type="checkbox"],
@@ -138,12 +148,13 @@ select:focus {
 }
 
 label {
+  margin-bottom: 4px;
   font-weight: 500;
   cursor: pointer;
 }
 
 textarea {
-  resize: vertical;
+  width: 100%;
 }
 
 button {
@@ -166,28 +177,10 @@ button:active {
   transform: scale(0.98);
 }
 
-.suggestion-box {
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  position: absolute;
-  z-index: 1000;
-  max-height: 200px;
-  overflow-y: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 0.95em;
-  animation: fadeIn 0.2s ease-in-out;
-  cursor: default;
-}
-
-.suggestion-item {
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.suggestion-item:hover {
-  background-color: #f0f0f0;
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .message {
@@ -211,11 +204,6 @@ button:active {
   animation: slideDown 0.3s ease forwards;
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes slideDown {
   0% { transform: translateY(-10px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
@@ -223,4 +211,23 @@ button:active {
 
 .hidden {
   display: none !important;
+}
+
+.helper-text {
+  font-size: 0.8em;
+  color: var(--helper-text);
+  margin-top: -8px;
+  margin-left: 24px;
+}
+
+@media (max-width: 600px) {
+  .overlay {
+    padding: 30px 20px;
+  }
+
+  .input-row,
+  .contact-row,
+  .time-range-row {
+    flex-direction: column;
+  }
 }
