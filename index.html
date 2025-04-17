@@ -12,73 +12,92 @@
     <h1>Routable</h1>
     <h2>There <em>is</em> a way. Let’s find it.</h2>
     <form>
-      <label for="start-address">Starting Address</label>
-      <div class="input-row">
-        <input type="text" id="start-address" class="wide-address" />
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" /> Unknown</label>
-        <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
-      </div>
+      <fieldset>
+        <legend>Starting Point</legend>
+        <label for="start-address">Address</label>
+        <div class="input-row">
+          <input type="text" id="start-address" class="wide-address" aria-describedby="start-uncertain-notes" />
+        </div>
+        <div class="input-row">
+          <label><input type="checkbox" id="start-uncertain" /> Unknown</label>
+          <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled />
+        </div>
+      </fieldset>
 
-      <label for="destination-address">Destination Address</label>
-      <div class="input-row">
-        <input type="text" id="destination-address" class="wide-address" />
-      </div>
-      <div class="input-row">
-        <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" /> Unknown</label>
-        <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
-      </div>
+      <fieldset>
+        <legend>Destination</legend>
+        <label for="destination-address">Address</label>
+        <div class="input-row">
+          <input type="text" id="destination-address" class="wide-address" aria-describedby="destination-uncertain-notes" />
+        </div>
+        <div class="input-row">
+          <label><input type="checkbox" id="destination-uncertain" /> Unknown</label>
+          <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled />
+        </div>
+      </fieldset>
 
-      <label for="start-time">Leaving Time</label>
-      <div class="input-row">
-        <input type="time" id="start-time" required style="width: 80px;" />
-        <label><input type="checkbox" id="time-flexible" /> Flexible</label>
-      </div>
+      <fieldset>
+        <legend>Time Preferences</legend>
+        <label for="start-time">Leaving Time</label>
+        <div class="input-row">
+          <input type="time" id="start-time" required style="width: 80px;" />
+          <label><input type="checkbox" id="time-flexible" /> Flexible</label>
+        </div>
 
-      <label for="end-time">Return Time</label>
-      <div class="input-row">
-        <input type="time" id="end-time" required style="width: 80px;" />
-        <label><input type="checkbox" id="return-flexible" /> Flexible</label>
-      </div>
+        <label for="end-time">Return Time</label>
+        <div class="input-row">
+          <input type="time" id="end-time" required style="width: 80px;" />
+          <label><input type="checkbox" id="return-flexible" /> Flexible</label>
+        </div>
 
-      <textarea id="time-notes" rows="2" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
+        <textarea id="time-notes" rows="2" placeholder="(e.g. prefer early afternoon, avoid rush hour)"></textarea>
+      </fieldset>
 
-      <label for="trip-type">Trip Type</label>
-      <div class="radio-group">
-        <label><input type="radio" name="tripType" value="oneway" /> One-way</label>
-        <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
-      </div>
+      <fieldset>
+        <legend>Trip Type</legend>
+        <div class="radio-group">
+          <label><input type="radio" name="tripType" value="oneway" /> One-way</label>
+          <label><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
+        </div>
+      </fieldset>
 
-      <label for="walking-distance">Comfortable Walking Distance</label>
-      <div class="input-row">
-        <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" required />
-        <label><input type="checkbox" id="walking-flexible" /> Flexible</label>
-      </div>
+      <fieldset>
+        <legend>Mobility & Budget</legend>
+        <label for="walking-distance">Comfortable Walking Distance</label>
+        <div class="input-row">
+          <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, 5 minutes, etc.)" required />
+          <label><input type="checkbox" id="walking-flexible" /> Flexible</label>
+        </div>
 
-      <label>Accessibility / Accommodations</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" /> Wheelchair accessible only</label>
-        <label><input type="checkbox" /> Avoid stairs or steep hills</label>
-        <label><input type="checkbox" /> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" /> Other</label>
-        <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
-      </div>
+        <label>Transit Budget (USD)</label>
+        <div class="input-row">
+          <input type="number" id="budget-max" placeholder="(Max USD)" required style="width: 120px;" />
+          <label><input type="checkbox" id="budget-flexible" /> Flexible</label>
+        </div>
+      </fieldset>
 
-      <label for="budget-max">Transit Budget (USD)</label>
-      <div class="input-row">
-        <input type="number" id="budget-max" placeholder="(Max USD)" required style="width: 120px;" />
-        <label><input type="checkbox" id="budget-flexible" /> Flexible</label>
-      </div>
+      <fieldset>
+        <legend>Accessibility / Accommodations</legend>
+        <div class="checkbox-group">
+          <label><input type="checkbox" /> Wheelchair accessible only</label>
+          <label><input type="checkbox" /> Avoid stairs or steep hills</label>
+          <label><input type="checkbox" /> Prefer indoor waiting areas</label>
+          <label><input type="checkbox" /> Other</label>
+          <textarea rows="2" placeholder="(e.g. need scent-free environment, low lighting)"></textarea>
+        </div>
+      </fieldset>
 
       <label for="notes">Other notes</label>
       <textarea id="notes" rows="3" placeholder="(e.g. avoid bridges, traveling with kids, etc.)"></textarea>
 
-      <label for="name">Name</label>
-      <input type="text" id="name" placeholder="(e.g. Alex)" />
+      <fieldset>
+        <legend>Contact</legend>
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="(e.g. Alex)" />
 
-      <label for="contact">Email address</label>
-      <input type="email" id="contact" placeholder="(e.g. alex@email.com)" />
+        <label for="contact">Email address</label>
+        <input type="email" id="contact" placeholder="(e.g. alex@email.com)" />
+      </fieldset>
 
       <button type="submit">Send Request</button>
     </form>
