@@ -25,13 +25,23 @@ const metroZips = new Set([
   '98178', '98188', '98195', '98198', '98199', '98402', '98403', '98405', '98406', '98407', '98408'
 ]);
 
+function debounce(fn, delay = 300) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
+
 function setupSuggestionBox(inputId) {
   const input = document.getElementById(inputId);
   const suggestionBox = document.createElement('div');
   suggestionBox.className = 'suggestion-box';
+  input.setAttribute('aria-haspopup', 'listbox');
+  input.setAttribute('aria-expanded', 'false');
   input.parentNode.appendChild(suggestionBox);
 
-  input.addEventListener('input', async () => {
+  const handleInput = debounce(async () => {
     const query = input.value;
     if (query.length < 3) return (suggestionBox.innerHTML = '');
 
@@ -40,31 +50,46 @@ function setupSuggestionBox(inputId) {
     )}.json?access_token=${mapboxToken}&autocomplete=true&country=US`;
 
     try {
+      suggestionBox.innerHTML = '<div class="suggestion-item">Loading...</div>';
       const res = await fetch(url);
       const data = await res.json();
       suggestionBox.innerHTML = '';
 
+      if (data.features.length === 0) {
+        suggestionBox.innerHTML = '<div class="suggestion-item">No suggestions found.</div>';
+        return;
+      }
+
+      input.setAttribute('aria-expanded', 'true');
       data.features.forEach((place) => {
         const item = document.createElement('div');
         item.className = 'suggestion-item';
         item.textContent = place.place_name;
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'option');
         item.addEventListener('click', () => {
           input.value = place.place_name;
-          suggestionBox.innerHTML = '';
           input.dataset.lat = place.center[1];
           input.dataset.lon = place.center[0];
           input.dataset.zip = extractZip(place);
+          suggestionBox.innerHTML = '';
+          input.setAttribute('aria-expanded', 'false');
+          triggerPricing();
         });
         suggestionBox.appendChild(item);
       });
     } catch (err) {
       console.error('Suggestion error:', err);
+      suggestionBox.innerHTML = '<div class="suggestion-item">Error fetching suggestions.</div>';
     }
   });
+
+  input.addEventListener('input', handleInput);
 
   document.addEventListener('click', (e) => {
     if (!suggestionBox.contains(e.target) && e.target !== input) {
       suggestionBox.innerHTML = '';
+      input.setAttribute('aria-expanded', 'false');
     }
   });
 }
@@ -87,6 +112,7 @@ function calculateMileage(lat1, lon1, lat2, lon2) {
 }
 
 function estimateCost(miles, zip1, zip2) {
+  if (!zip1 || !zip2) return 'Cannot calculate (missing ZIP info)';
   const bothMetro = metroZips.has(zip1) && metroZips.has(zip2);
   if (miles <= 10 && bothMetro) return '$2';
   if (miles <= 10) return '$5';
@@ -100,25 +126,55 @@ function setupPricing() {
   const dest = document.getElementById('destination-address');
   const resultBox = document.createElement('div');
   resultBox.className = 'message';
+  resultBox.setAttribute('title', 'Cost is based on mileage and whether ZIP codes are in metro zones.');
   start.parentNode.appendChild(resultBox);
 
-  const handler = () => {
-    const lat1 = parseFloat(start.dataset.lat);
-    const lon1 = parseFloat(start.dataset.lon);
-    const lat2 = parseFloat(dest.dataset.lat);
-    const lon2 = parseFloat(dest.dataset.lon);
-    const zip1 = start.dataset.zip;
-    const zip2 = dest.dataset.zip;
-    if (lat1 && lon1 && lat2 && lon2 && zip1 && zip2) {
-      const miles = calculateMileage(lat1, lon1, lat2, lon2);
-      const cost = estimateCost(miles, zip1, zip2);
-      resultBox.textContent = `Estimated Cost: ${cost} (${miles.toFixed(1)} mi)`;
-      resultBox.classList.add('success');
-    }
-  };
-
+  const handler = () => triggerPricing(resultBox);
   start.addEventListener('change', handler);
   dest.addEventListener('change', handler);
+}
+
+function triggerPricing(resultBox) {
+  const start = document.getElementById('start-address');
+  const dest = document.getElementById('destination-address');
+
+  const lat1 = parseFloat(start.dataset.lat);
+  const lon1 = parseFloat(start.dataset.lon);
+  const lat2 = parseFloat(dest.dataset.lat);
+  const lon2 = parseFloat(dest.dataset.lon);
+  const zip1 = start.dataset.zip;
+  const zip2 = dest.dataset.zip;
+
+  const box = resultBox || document.querySelector('.message');
+
+  if (!lat1 || !lon1 || !lat2 || !lon2) {
+    if (box) {
+      box.textContent = 'Waiting for both addresses to estimate price.';
+      box.classList.remove('success');
+    }
+    return;
+  }
+
+  const miles = calculateMileage(lat1, lon1, lat2, lon2);
+  const cost = estimateCost(miles, zip1, zip2);
+
+  if (box) {
+    box.textContent = `Estimated Cost: ${cost} (${miles.toFixed(1)} mi)`;
+    box.classList.add('success');
+  }
+}
+
+function resetPricing() {
+  const result = document.querySelector('.message');
+  if (result) result.textContent = '';
+  ['start-address', 'destination-address'].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      delete el.dataset.lat;
+      delete el.dataset.lon;
+      delete el.dataset.zip;
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
