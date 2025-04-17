@@ -6,7 +6,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // Function to fetch address suggestions from Mapbox
 async function fetchSuggestions(query) {
   const MAPBOX_TOKEN = 'pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w';
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&limit=5&access_token=${MAPBOX_TOKEN}`;
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&types=address&limit=5&access_token=${MAPBOX_TOKEN}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -43,11 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
       suggestionBox.innerHTML = '';
 
       suggestions.forEach(feature => {
+        const address = feature.place_name;
         const item = document.createElement('div');
         item.className = 'suggestion-item';
-        item.textContent = feature.place_name;
+        item.textContent = address;
         item.addEventListener('click', () => {
-          input.value = feature.place_name;
+          input.value = address;
           suggestionBox.innerHTML = '';
           suggestionBox.style.display = 'none';
         });
