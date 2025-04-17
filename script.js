@@ -7,9 +7,15 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 async function fetchSuggestions(query) {
   const MAPBOX_TOKEN = 'pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjazBlankxa2MwaXI0M2RwODlqZDlnajZxIn0.OxhIZtQVLRUW8jbBoa8x7w';
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&limit=5&access_token=${MAPBOX_TOKEN}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  return data.features || [];
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log('Mapbox API response:', data);
+    return data.features || [];
+  } catch (error) {
+    console.error('Failed to fetch suggestions from Mapbox:', error);
+    return [];
+  }
 }
 
 // Handle form submission
@@ -75,6 +81,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const accessibility = [];
     form.querySelectorAll('input[name="accessibility"]:checked').forEach(cb => accessibility.push(cb.value));
     data.accessibility = accessibility.length ? accessibility : null;
+
+    console.log('Form data to be submitted:', data);
 
     const { error } = await supabase.from('requests').insert([data]);
 
