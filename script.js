@@ -1,9 +1,7 @@
 // Initialize Supabase client
 const SUPABASE_URL = 'https://zszjyfswpplbhjxievhz.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpzemp5ZnN3cHBsYmhqeGlldmh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4NTU5ODgsImV4cCI6MjA2MDQzMTk4OH0.5oh10-d4zwemTGZCEwfEeXs5C0gqjZid5HF6sDng7j0';
-
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
 
 // Function to fetch address suggestions from Mapbox
 async function fetchSuggestions(query) {
