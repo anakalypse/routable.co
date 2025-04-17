@@ -1,7 +1,7 @@
 /* Routable Form Styles - Fully Enhanced */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.92);
+  --primary-bg: rgba(255, 255, 255, 0.96);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -38,19 +38,19 @@ body::before {
 
 .overlay {
   background-color: var(--primary-bg);
-  backdrop-filter: blur(14px);
-  max-width: 600px;
+  backdrop-filter: blur(16px);
+  max-width: 580px;
   margin: 60px auto;
-  padding: 32px 26px;
+  padding: 30px 24px;
   border-radius: 20px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
   text-align: center;
   font-family: 'Kanit', sans-serif;
   font-weight: 400;
-  font-size: 2.5em;
+  font-size: 2.4em;
   color: #2e2e2e;
   letter-spacing: 0.6px;
   font-style: italic;
@@ -71,7 +71,7 @@ form {
   flex-direction: column;
   gap: 20px;
   animation: fadeIn 1s ease-in-out;
-  font-size: 0.95em;
+  font-size: 0.9em;
 }
 
 .input-group {
@@ -81,40 +81,20 @@ form {
 }
 
 .input-row,
-.contact-row {
+.contact-row,
+.time-range-row {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   justify-content: space-between;
+  align-items: center;
 }
 
-.contact-row input {
+.contact-row input,
+.time-range-row select,
+.time-range-row input[type="time"] {
   flex: 1;
   min-width: 160px;
-}
-
-.timing-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-}
-
-.time-option {
-  flex: 1;
-  padding: 10px 14px;
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.2s;
-  font-size: 0.95em;
-}
-
-.time-option.active {
-  background-color: var(--accent);
-  color: white;
-  border-color: var(--accent);
 }
 
 .checkbox-group {
@@ -247,7 +227,7 @@ button:active {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-bg: rgba(20, 20, 20, 0.85);
+    --primary-bg: rgba(30, 30, 30, 0.85);
     --primary-text: #f5f5f5;
     --helper-text: #aaa;
     --accent: #76c7a3;
@@ -260,15 +240,5 @@ button:active {
 
   body::before {
     background-color: rgba(0, 0, 0, 0.6);
-  }
-
-  .time-option {
-    background-color: #333;
-    border-color: #555;
-  }
-
-  .time-option.active {
-    background-color: var(--accent);
-    color: #fff;
   }
 }
