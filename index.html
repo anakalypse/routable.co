@@ -24,50 +24,41 @@
         <div id="destination-suggestions" class="suggestion-box"></div>
       </div>
       <div class="input-group">
-        <label for="start_time">Leaving Time</label>
-        <input type="time" id="start_time" name="start_time" required>
-        <label><input type="checkbox" id="time-flexible"> Flexible</label>
-      </div>
-      <div class="input-group">
-        <label for="return_time">Return Time</label>
-        <input type="time" id="return_time" name="return_time">
-        <label><input type="checkbox" id="return-flexible"> Flexible</label>
-      </div>
-      <div class="input-group">
-        <label for="time_notes">Time Clarifications</label>
-        <textarea id="time_notes" name="time_notes"></textarea>
+        <label>Leaving Time</label>
+        <div class="input-row">
+          <input type="time" id="start_time" name="start_time" required>
+          <span>to</span>
+          <input type="time" id="end_time" name="return_time">
+        </div>
+        <label for="time-pref">Time Preference</label>
+        <select id="time-pref" name="time_pref">
+          <option value="leave">Leave at</option>
+          <option value="arrive">Arrive by</option>
+          <option value="last">Last available</option>
+        </select>
       </div>
       <div class="input-group">
         <label>Trip Type</label>
         <label><input type="radio" name="trip_type" value="oneway"> One-way</label>
         <label><input type="radio" name="trip_type" value="roundtrip" checked> Round-trip</label>
       </div>
-      <div class="input-group">
-        <label for="walking_distance">Comfortable Walking Distance</label>
-        <input type="text" id="walking_distance" name="walking_distance" required>
-        <label><input type="checkbox" id="walking-flexible"> Flexible</label>
-      </div>
       <div class="checkbox-group">
         <label>Accessibility / Accommodations</label>
         <label><input type="checkbox" name="accessibility" value="wheelchair"> Wheelchair accessible only</label>
         <label><input type="checkbox" name="accessibility" value="stairs"> Avoid stairs or steep hills</label>
         <label><input type="checkbox" name="accessibility" value="indoor"> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" name="accessibility" value="other"> Other</label>
+        <label><input type="checkbox" name="accessibility" value="minimal"> Minimal walking</label>
+        <label><input type="checkbox" name="accessibility" value="other" id="access-other"> Other</label>
+        <textarea id="access-other-notes" name="access_other_notes" style="display:none;" placeholder="Please specify..."></textarea>
       </div>
       <div class="input-group">
-        <label for="budget_max">Transit Budget (USD)</label>
+        <label for="budget_max">Max Transit Budget (USD)</label>
         <input type="number" id="budget_max" name="budget_max" required>
         <label><input type="checkbox" id="budget-flexible"> Flexible</label>
       </div>
       <div class="input-group">
         <label for="notes">Other Notes</label>
         <textarea id="notes" name="notes"></textarea>
-      </div>
-      <div class="input-group">
-        <label for="deadline">When do you need this route by?</label>
-        <input type="date" id="deadline" name="deadline">
-        <label><input type="checkbox" id="deadline-flexible"> Flexible</label>
-        <textarea id="urgency_notes" name="urgency_notes" placeholder="If flexible, add clarification here."></textarea>
       </div>
       <div class="input-group">
         <label for="name">Name</label>
@@ -82,8 +73,10 @@
         <input type="tel" id="phone" name="phone">
       </div>
       <div class="input-group">
-        <label for="language">Preferred Language (for report)</label>
-        <input type="text" id="language" name="language">
+        <label>Is this an urgent route request?</label>
+        <div id="urgency-section">
+          <label><input type="checkbox" id="urgent-request" name="urgent_request"> Yes, I need this within 5 hours (extra charge applies)</label>
+        </div>
       </div>
       <button type="submit">Send Request</button>
       <div id="form-message" class="message"></div>
