@@ -32,27 +32,27 @@
         </div>
       </div>
       <div class="input-group">
-        <label>Departure Preference</label>
+        <label>Departure Time</label>
         <div class="time-range-row">
           <select name="start_time_type">
-            <option value="none">No preference</option>
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
             <option value="last">Last available</option>
           </select>
           <input type="time" id="start_time" name="start_time">
+          <label><input type="checkbox" name="start_time_none"> No preference</label>
         </div>
       </div>
       <div class="input-group" id="return-time-group">
-        <label>Return Preference</label>
+        <label>Return Time</label>
         <div class="time-range-row">
           <select name="return_time_type">
-            <option value="none">No preference</option>
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
             <option value="last">Last available</option>
           </select>
           <input type="time" id="return_time" name="return_time">
+          <label><input type="checkbox" name="return_time_none"> No preference</label>
         </div>
       </div>
       <div class="input-group">
