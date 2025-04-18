@@ -10,9 +10,10 @@
 </head>
 <body>
   <div class="overlay">
-    <h1 style="text-align: center;">Routable</h1>
-    <h2 style="text-align: center;">There <em>is</em> a way. Let’s find it.</h2>
-    <form id="routable-form" style="text-align: left;">
+    <h1>Routable</h1>
+    <h2>There <em>is</em> a way. Let’s find it.</h2>
+    <p style="text-align: center; margin-top: -12px;">Tell us where you’re going, and we’ll find a way to get you there.</p>
+    <form id="routable-form">
       <div class="input-group">
         <label for="start-address">Starting Address</label>
         <input type="text" id="start-address" name="start_address" class="address-box" required>
@@ -31,25 +32,27 @@
         </div>
       </div>
       <div class="input-group">
-        <label>Departure Time Preference</label>
+        <label>Departure Preference</label>
         <div class="time-range-row">
-          <select name="departure_time_pref">
+          <select name="start_time_type">
+            <option value="none">No preference</option>
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
-            <option value="last">Last option</option>
+            <option value="last">Last available</option>
           </select>
-          <input type="time" name="start_time">
+          <input type="time" id="start_time" name="start_time">
         </div>
       </div>
       <div class="input-group" id="return-time-group">
-        <label>Return Time Preference</label>
+        <label>Return Preference</label>
         <div class="time-range-row">
-          <select name="return_time_pref">
+          <select name="return_time_type">
+            <option value="none">No preference</option>
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
-            <option value="last">Last option</option>
+            <option value="last">Last available</option>
           </select>
-          <input type="time" name="return_time">
+          <input type="time" id="return_time" name="return_time">
         </div>
       </div>
       <div class="input-group">
@@ -58,26 +61,26 @@
           <label><input type="checkbox" name="accessibility" value="wheelchair"> Wheelchair accessible only</label>
           <label><input type="checkbox" name="accessibility" value="stairs"> Avoid stairs or steep hills</label>
           <label><input type="checkbox" name="accessibility" value="indoor"> Prefer indoor waiting areas</label>
-          <label><input type="checkbox" name="accessibility" value="other" id="other-access"> Other</label>
-          <textarea id="other-specify" name="accessibility_other" class="hidden" placeholder="Please specify..."></textarea>
+          <label><input type="checkbox" name="accessibility" value="other" id="accessibility-other"> Other</label>
+          <textarea id="accessibility-other-text" name="accessibility_other_text" placeholder="Please specify..." class="hidden"></textarea>
         </div>
       </div>
       <div class="input-group">
         <label for="budget_max">Max Budget (USD)</label>
         <div class="time-range-row">
-          <input type="number" id="budget_max" name="budget_max" required>
+          <input type="number" id="budget_max" name="budget_max">
           <label><input type="checkbox" id="budget-flexible"> No preference</label>
         </div>
       </div>
       <div class="input-group">
         <label for="notes">Other Specifications</label>
-        <textarea id="notes" name="notes" required></textarea>
+        <textarea id="notes" name="notes"></textarea>
       </div>
       <div class="input-group">
         <label>Is this an urgent route request?</label>
-        <div class="radio-group">
+        <div class="radio-group urgency-options">
           <label><input type="radio" name="urgent" value="yes"> Yes (Receive report within 12 hours for an additional fee if metro)</label>
-          <label><input type="radio" name="urgent" value="no"> No - I acknowledge that standard reports may take 24–48 hours depending on trip complexity</label>
+          <label><input type="radio" name="urgent" value="no"> No – I acknowledge typical turnaround is 24–48 hours depending on trip complexity</label>
         </div>
       </div>
       <div class="name-email-row">
@@ -90,9 +93,7 @@
           <input type="email" id="email" name="email" required>
         </div>
       </div>
-      <div style="text-align: center;">
-        <button type="submit">Send Request</button>
-      </div>
+      <button type="submit">Send Request</button>
       <div id="form-message" class="message"></div>
     </form>
   </div>
