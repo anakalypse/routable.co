@@ -1,7 +1,7 @@
 /* Routable Form Styles - Fully Enhanced */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.75);
+  --primary-bg: rgba(255, 255, 255, 0.65);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -46,7 +46,7 @@ body::before {
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
-h1, h2, label {
+h1, h2 {
   text-align: center;
 }
 
@@ -73,6 +73,7 @@ form {
   flex-direction: column;
   gap: 24px;
   font-size: 0.95em;
+  text-align: left;
 }
 
 .input-group {
@@ -161,11 +162,13 @@ button:hover {
 
 label {
   font-weight: bold;
+  text-align: left;
 }
 
 .radio-group label,
 .checkbox-group label {
   font-weight: normal;
+  text-align: left;
 }
 
 .message {
