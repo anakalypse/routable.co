@@ -1,5 +1,5 @@
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.75);
+  --primary-bg: rgba(255, 255, 255, 0.6);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -19,7 +19,7 @@ body {
 
 .overlay {
   background-color: var(--primary-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
   max-width: 700px;
   margin: 40px auto;
   padding: 40px;
@@ -28,7 +28,7 @@ body {
 }
 
 h1 {
-  text-align: center;
+  text-align: left;
   font-family: 'Kanit', sans-serif;
   font-size: 2.6em;
   font-weight: 400;
@@ -41,20 +41,20 @@ form {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .input-group {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .input-group > label {
   font-weight: bold;
   margin-bottom: 8px;
-  text-align: center;
+  text-align: left;
 }
 
 .input-group input,
@@ -69,10 +69,13 @@ form {
   box-sizing: border-box;
 }
 
-.input-row {
+.input-row,
+.name-email-row {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .checkbox-group,
@@ -83,17 +86,19 @@ form {
   align-items: flex-start;
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
+  padding-left: 20px;
 }
 
 .checkbox-group > label,
 .radio-group > label {
   font-weight: normal;
+  text-align: left;
+  width: 100%;
 }
 
 .time-range-row {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 12px;
   width: 100%;
 }
