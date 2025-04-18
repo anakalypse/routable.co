@@ -23,7 +23,6 @@
         <input type="text" id="destination-address" name="destination_address" class="address-box" required>
         <div id="destination-suggestions" class="suggestion-box"></div>
       </div>
-
       <div class="input-group">
         <label>Trip Type</label>
         <div class="radio-group">
@@ -31,43 +30,38 @@
           <label><input type="radio" name="trip_type" value="roundtrip" checked> Round-trip</label>
         </div>
       </div>
-
       <div class="input-group">
-        <label for="departure_preference">Departure Preference</label>
+        <label>Departure Time Preference</label>
         <div class="time-range-row">
-          <select id="departure_preference" name="departure_preference">
+          <select name="departure_time_pref">
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
-            <option value="last">Last available</option>
+            <option value="last">Last option</option>
           </select>
-          <input type="time" id="start_time" name="start_time" required>
+          <input type="time" name="start_time">
         </div>
       </div>
-
       <div class="input-group" id="return-time-group">
-        <label for="return_preference">Return Preference</label>
+        <label>Return Time Preference</label>
         <div class="time-range-row">
-          <select id="return_preference" name="return_preference">
+          <select name="return_time_pref">
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
-            <option value="last">Last available</option>
+            <option value="last">Last option</option>
           </select>
-          <input type="time" id="return_time" name="return_time">
+          <input type="time" name="return_time">
         </div>
       </div>
-
       <div class="input-group">
         <label>Accessibility / Accommodations</label>
         <div class="checkbox-group">
           <label><input type="checkbox" name="accessibility" value="wheelchair"> Wheelchair accessible only</label>
           <label><input type="checkbox" name="accessibility" value="stairs"> Avoid stairs or steep hills</label>
           <label><input type="checkbox" name="accessibility" value="indoor"> Prefer indoor waiting areas</label>
-          <label><input type="checkbox" name="accessibility" value="walking"> Minimal walking</label>
-          <label><input type="checkbox" name="accessibility" value="other" id="accessibility-other"> Other</label>
-          <textarea id="accessibility-other-text" name="accessibility_other_text" class="hidden" placeholder="Please clarify..."></textarea>
+          <label><input type="checkbox" name="accessibility" value="other" id="other-access"> Other</label>
+          <textarea id="other-specify" name="accessibility_other" class="hidden" placeholder="Please specify..."></textarea>
         </div>
       </div>
-
       <div class="input-group">
         <label for="budget_max">Max Budget (USD)</label>
         <div class="time-range-row">
@@ -75,21 +69,18 @@
           <label><input type="checkbox" id="budget-flexible"> No preference</label>
         </div>
       </div>
-
       <div class="input-group">
         <label for="notes">Other Specifications</label>
-        <textarea id="notes" name="notes"></textarea>
+        <textarea id="notes" name="notes" required></textarea>
       </div>
-
       <div class="input-group">
         <label>Is this an urgent route request?</label>
         <div class="radio-group">
           <label><input type="radio" name="urgent" value="yes"> Yes (Receive report within 12 hours for an additional fee if metro)</label>
-          <label><input type="radio" name="urgent" value="no" checked> No - I acknowledge that my report will be ready in 24–48 hours depending on complexity</label>
+          <label><input type="radio" name="urgent" value="no"> No - I acknowledge that standard reports may take 24–48 hours depending on trip complexity</label>
         </div>
       </div>
-
-      <div class="input-group name-email-row">
+      <div class="name-email-row">
         <div class="input-group">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" required>
@@ -99,7 +90,6 @@
           <input type="email" id="email" name="email" required>
         </div>
       </div>
-
       <button type="submit">Send Request</button>
       <div id="form-message" class="message"></div>
     </form>
