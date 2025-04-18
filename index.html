@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Routable | Find Your Way</title>
+  <title>Routable</title>
+  <link rel="icon" type="image/svg+xml" href="https://api.iconify.design/mdi:transit-variant.svg">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -11,49 +12,48 @@
 <body>
   <div class="overlay">
     <h1>Routable</h1>
-    <h2>There <em>is</em> a way. Let’s find it.</h2>
     <form id="routable-form">
       <div class="input-group">
         <label for="start-address">Starting Address</label>
-        <input type="text" id="start-address" name="start_address" class="address-box" required autocomplete="off">
+        <input type="text" id="start-address" name="start_address" class="address-box" required>
         <div id="start-suggestions" class="suggestion-box"></div>
       </div>
 
       <div class="input-group">
         <label for="destination-address">Destination Address</label>
-        <input type="text" id="destination-address" name="destination_address" class="address-box" required autocomplete="off">
+        <input type="text" id="destination-address" name="destination_address" class="address-box" required>
         <div id="destination-suggestions" class="suggestion-box"></div>
       </div>
 
       <div class="input-group">
         <label>Trip Type</label>
         <div class="radio-group">
-          <label><input type="radio" name="trip_type" value="oneway"> One-way</label>
-          <label><input type="radio" name="trip_type" value="roundtrip" checked> Round-trip</label>
+          <label><input type="radio" name="trip_type" value="oneway" checked> One-way</label>
+          <label><input type="radio" name="trip_type" value="roundtrip"> Round-trip</label>
         </div>
       </div>
 
       <div class="input-group">
-        <label>Departure Time Preference</label>
+        <label>Leaving Preference</label>
         <div class="time-range-row">
-          <select name="departure_time_pref" class="time-option" required>
+          <select name="start_preference">
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
             <option value="last">Last available</option>
           </select>
-          <input type="time" name="start_time" id="start_time" required>
+          <input type="time" id="start_time" name="start_time">
         </div>
       </div>
 
-      <div class="input-group" id="return-time-group">
-        <label>Return Time Preference</label>
+      <div class="input-group" id="return-section">
+        <label>Return Preference</label>
         <div class="time-range-row">
-          <select name="return_time_pref" class="time-option">
+          <select name="return_preference">
             <option value="leave">Leave at</option>
             <option value="arrive">Arrive by</option>
             <option value="last">Last available</option>
           </select>
-          <input type="time" name="return_time" id="return_time">
+          <input type="time" id="return_time" name="return_time">
         </div>
       </div>
 
@@ -62,37 +62,39 @@
         <label><input type="checkbox" name="accessibility" value="wheelchair"> Wheelchair accessible only</label>
         <label><input type="checkbox" name="accessibility" value="stairs"> Avoid stairs or steep hills</label>
         <label><input type="checkbox" name="accessibility" value="indoor"> Prefer indoor waiting areas</label>
-        <label><input type="checkbox" name="accessibility" value="minimal"> Minimal walking required</label>
         <label><input type="checkbox" name="accessibility" value="other" id="accessibility-other"> Other</label>
-        <textarea name="accessibility_other_text" id="accessibility-other-text" class="hidden" placeholder="Please specify"></textarea>
+        <textarea id="accessibility-other-box" name="accessibility_other" class="hidden" placeholder="Please specify"></textarea>
       </div>
 
       <div class="input-group">
         <label for="budget_max">Max Budget (USD)</label>
-        <div class="input-row">
-          <input type="number" id="budget_max" name="budget_max" required>
+        <div class="time-range-row">
+          <input type="number" id="budget_max" name="budget_max">
           <label><input type="checkbox" id="budget-flexible"> No preference</label>
         </div>
       </div>
 
       <div class="input-group">
         <label for="notes">Other Specifications</label>
-        <textarea id="notes" name="notes"></textarea>
-      </div>
-
-      <div class="input-group">
-        <label>Contact Info</label>
-        <div class="input-row">
-          <input type="text" id="name" name="name" placeholder="Name" required>
-          <input type="email" id="email" name="email" placeholder="Email" required>
-        </div>
+        <textarea id="notes" name="notes" required></textarea>
       </div>
 
       <div class="input-group">
         <label>Is this an urgent route request?</label>
         <div class="radio-group">
-          <label><input type="radio" name="urgent" value="yes"> Yes – I need this route within 12 hours (additional cost applies)</label>
-          <label><input type="radio" name="urgent" value="no" checked> No – I acknowledge that standard turnaround is 24–48 hours depending on complexity</label>
+          <label><input type="radio" name="urgent" value="yes"> Yes — I understand there is an upcharge for a report within 12 hours.</label>
+          <label><input type="radio" name="urgent" value="no" checked> No — I acknowledge that the report may take 24–48 hours depending on the trip’s complexity.</label>
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="input-group" style="flex: 1">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name">
+        </div>
+        <div class="input-group" style="flex: 1">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email">
         </div>
       </div>
 
