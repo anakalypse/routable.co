@@ -1,5 +1,3 @@
-/* Routable CSS Styles */
-
 :root {
   --primary-bg: rgba(255, 255, 255, 0.75);
   --primary-text: #2f2f2f;
@@ -11,88 +9,103 @@
 }
 
 body {
-  margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
   background: url('https://i.imgur.com/5FLv0aw.jpg') no-repeat center center fixed;
   background-size: cover;
   color: var(--primary-text);
+  scroll-behavior: smooth;
 }
 
 .overlay {
   background-color: var(--primary-bg);
-  backdrop-filter: blur(10px);
-  max-width: 500px;
-  margin: 60px auto;
-  padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
-}
-
-h1, h2, label {
-  text-align: center;
-  font-weight: bold;
+  backdrop-filter: blur(12px);
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
+  text-align: center;
   font-family: 'Kanit', sans-serif;
   font-size: 2.6em;
-  margin-bottom: 0.2em;
-}
-
-h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3em;
-  margin-top: 0;
-  color: #444;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--primary-text);
+  margin-bottom: 20px;
 }
 
 form {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  align-items: center;
 }
 
-.input-group,
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group > label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.input-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
 .checkbox-group,
 .radio-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  position: relative;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.input-row {
+.checkbox-group > label,
+.radio-group > label {
+  font-weight: normal;
+}
+
+.time-range-row {
   display: flex;
-  flex-direction: row;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-input,
-select,
-textarea,
-button {
-  font-family: inherit;
-  font-size: 1em;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  transition: all 0.2s ease-in-out;
-}
-
-textarea {
-  resize: vertical;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
 }
 
 button {
   background-color: var(--accent);
-  color: white;
-  border: none;
+  color: #fff;
+  padding: 12px 24px;
   font-size: 1.1em;
-  cursor: pointer;
-  padding: 14px 30px;
+  border: none;
   border-radius: 8px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
@@ -100,43 +113,28 @@ button:hover {
   background-color: var(--accent-hover);
 }
 
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
 .message {
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.message.success {
-  background-color: #e6ffea;
-  border: 1px solid var(--success);
-  color: var(--success);
-}
-
-.message.error {
-  background-color: #ffe6e6;
-  border: 1px solid var(--error);
-  color: var(--error);
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .suggestion-box {
   background: #fff;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   position: absolute;
   z-index: 1000;
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
   width: 100%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 0.95em;
+  display: none;
 }
 
 .suggestion-item {
-  padding: 10px 14px;
+  padding: 10px 16px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -145,24 +143,6 @@ button:disabled {
   background-color: #f0f0f0;
 }
 
-.time-range-row {
-  display: flex;
-  flex-direction: row;
-  gap: 14px;
-  align-items: center;
-}
-
 .hidden {
-  display: none;
-}
-
-@media (max-width: 600px) {
-  .input-row,
-  .time-range-row {
-    flex-direction: column;
-  }
-
-  .overlay {
-    padding: 30px 20px;
-  }
+  display: none !important;
 }
