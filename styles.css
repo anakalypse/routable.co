@@ -1,7 +1,7 @@
 /* Routable CSS Styles */
 
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.85);
+  --primary-bg: rgba(255, 255, 255, 0.75);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -21,15 +21,16 @@ body {
 .overlay {
   background-color: var(--primary-bg);
   backdrop-filter: blur(10px);
-  max-width: 850px;
+  max-width: 500px;
   margin: 60px auto;
-  padding: 50px 40px;
+  padding: 40px 30px;
   border-radius: 16px;
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
 }
 
-h1, h2 {
+h1, h2, label {
   text-align: center;
+  font-weight: bold;
 }
 
 h1 {
