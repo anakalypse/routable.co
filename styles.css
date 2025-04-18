@@ -1,5 +1,5 @@
 :root {
-  --primary-bg: rgba(255, 255, 255, 0.5);
+  --primary-bg: rgba(255, 255, 255, 0.4);
   --primary-text: #2f2f2f;
   --accent: #4b6043;
   --accent-hover: #3a4d35;
@@ -20,7 +20,7 @@ body {
 .overlay {
   background-color: var(--primary-bg);
   backdrop-filter: blur(14px);
-  max-width: 700px;
+  max-width: 600px;
   margin: 40px auto;
   padding: 40px;
   border-radius: 20px;
@@ -64,6 +64,10 @@ form {
   box-sizing: border-box;
 }
 
+.input-group input#budget_max {
+  max-width: 200px;
+}
+
 .input-row,
 .name-email-row {
   display: flex;
@@ -93,6 +97,9 @@ form {
   gap: 10px;
   justify-content: flex-start;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .time-range-row {
