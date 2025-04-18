@@ -1,4 +1,4 @@
-/* Routable Form Styles - Fully Enhanced */
+/* Routable CSS Styles */
 
 :root {
   --primary-bg: rgba(255, 255, 255, 0.85);
@@ -10,58 +10,37 @@
   --helper-text: #666;
 }
 
-* {
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: url('https://i.imgur.com/5FLv0aw.jpg') no-repeat center center fixed;
   background-size: cover;
   color: var(--primary-text);
-  position: relative;
-  scroll-behavior: smooth;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: -1;
 }
 
 .overlay {
   background-color: var(--primary-bg);
-  backdrop-filter: blur(18px);
-  max-width: 560px;
+  backdrop-filter: blur(10px);
+  max-width: 850px;
   margin: 60px auto;
-  padding: 26px;
-  border-radius: 18px;
-  box-shadow: 0 0 28px rgba(0, 0, 0, 0.2);
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
+}
+
+h1, h2 {
+  text-align: center;
 }
 
 h1 {
-  text-align: center;
   font-family: 'Kanit', sans-serif;
-  font-weight: 400;
-  font-size: 2.4em;
-  color: #2e2e2e;
-  letter-spacing: 0.7px;
-  font-style: italic;
+  font-size: 2.6em;
   margin-bottom: 0.2em;
 }
 
 h2 {
-  text-align: center;
   font-family: 'Playfair Display', serif;
-  font-size: 1.2em;
-  font-weight: 400;
+  font-size: 1.3em;
   margin-top: 0;
   color: #444;
 }
@@ -70,46 +49,22 @@ form {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  animation: fadeIn 1s ease-in-out;
-  font-size: 0.85em;
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  position: relative;
-}
-
-.input-row,
-.time-range-row,
-.contact-row {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.contact-row {
-  justify-content: space-between;
-}
-
-.contact-row input {
-  flex: 1;
-  min-width: 180px;
-}
-
+.input-group,
 .checkbox-group,
 .radio-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
 }
 
-input:disabled,
-textarea:disabled {
-  background-color: #f5f5f5;
-  opacity: 0.7;
+.input-row {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
 input,
@@ -117,130 +72,96 @@ select,
 textarea,
 button {
   font-family: inherit;
-  font-size: 0.85em;
+  font-size: 1em;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
-  transition: all 0.3s ease, transform 0.2s ease;
-  width: 100%;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"],
-select,
-textarea {
-  min-width: 150px;
-  flex: 1;
-}
-
-input[type="time"] {
-  width: 120px;
-}
-
-select.time-option {
-  width: 140px;
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  width: auto;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 8px rgba(75, 96, 67, 0.3);
-  outline: none;
-  transform: scale(1.01);
-}
-
-label {
-  margin-bottom: 4px;
-  font-weight: 500;
-  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 textarea {
-  width: 100%;
+  resize: vertical;
 }
 
 button {
   background-color: var(--accent);
-  color: #fff;
+  color: white;
   border: none;
-  font-size: 1em;
-  border-radius: 8px;
+  font-size: 1.1em;
   cursor: pointer;
-  padding: 14px 28px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  padding: 14px 30px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: var(--accent-hover);
-  transform: translateY(-2px);
-}
-
-button:active {
-  transform: scale(0.98);
 }
 
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-  opacity: 0.7;
 }
 
 .message {
   padding: 12px;
   border-radius: 8px;
   font-weight: 500;
-  margin-top: -10px;
-}
-
-.message.error {
-  background: #ffe6e6;
-  border: 1px solid var(--error);
-  color: var(--error);
-  animation: slideDown 0.3s ease forwards;
 }
 
 .message.success {
-  background: #e6ffea;
+  background-color: #e6ffea;
   border: 1px solid var(--success);
   color: var(--success);
-  animation: slideDown 0.3s ease forwards;
 }
 
-@keyframes slideDown {
-  0% { transform: translateY(-10px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+.message.error {
+  background-color: #ffe6e6;
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+.suggestion-box {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.suggestion-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+
+.time-range-row {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  align-items: center;
 }
 
 .hidden {
-  display: none !important;
-}
-
-.helper-text {
-  font-size: 0.8em;
-  color: var(--helper-text);
-  margin-top: -8px;
-  margin-left: 24px;
+  display: none;
 }
 
 @media (max-width: 600px) {
-  .overlay {
-    padding: 30px 20px;
-  }
-
   .input-row,
-  .contact-row,
   .time-range-row {
     flex-direction: column;
+  }
+
+  .overlay {
+    padding: 30px 20px;
   }
 }
