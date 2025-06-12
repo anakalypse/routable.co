@@ -16,6 +16,7 @@ body {
   background: url('https://i.imgur.com/5FLv0aw.jpg') no-repeat center center fixed;
   background-size: cover;
   color: var(--primary-text);
+  overflow-x: hidden;
 }
 
 .overlay {
@@ -47,6 +48,8 @@ h2 {
 }
 
 form {
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -121,6 +124,8 @@ button:hover {
   overflow-y: auto;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .suggestion-item {
@@ -164,10 +169,44 @@ textarea#accessibility-other-text {
 
 @media (max-width: 600px) {
   .overlay {
-    padding: 20px;
+    padding: 16px;
+    margin: 20px 12px;
   }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1em;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 1em;
+    padding: 10px;
+  }
+
+  button {
+    padding: 12px 24px;
+    font-size: 1em;
+  }
+
   .time-range-row,
   .name-email-row {
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .checkbox-group,
+  .radio-group {
+    gap: 8px;
+  }
+
+  textarea {
+    min-height: 60px;
   }
 }
+
