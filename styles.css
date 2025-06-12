@@ -192,7 +192,12 @@ textarea#accessibility-other-text {
     font-size: 1em;
     margin-top: -8px;
   }
-
+  
+  .logo-image {
+    width: 48px;
+    margin-bottom: 8px;
+  }
+  
   p {
     font-size: 0.95em;
     line-height: 1.4;
