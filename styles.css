@@ -8,6 +8,10 @@
   --error: red;
   --success: green;
   --helper-text: #666;
+  --overlay-bg: rgba(255, 255, 255, 0.96);
+  --form-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  --text-color: #1f1f1f;
+  --heading-color: #111;
 }
 
 body {
@@ -20,20 +24,21 @@ body {
 }
 
 .overlay {
-  background-color: var(--primary-bg);
+  background-color: var(--overlay-bg);
   backdrop-filter: blur(10px);
   max-width: 650px;
   margin: 50px auto;
   padding: 40px;
   border-radius: 20px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--form-shadow);
+  color: var(--text-color);
 }
 
 h1, h2 {
   text-align: center;
   font-family: 'Kanit', sans-serif;
   font-weight: 400;
-  color: #2e2e2e;
+  color: var(--heading-color);
 }
 
 h1 {
