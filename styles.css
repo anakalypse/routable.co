@@ -196,6 +196,8 @@ textarea#accessibility-other-text {
   textarea {
     padding: 10px 12px;
     font-size: 0.95em;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   button {
