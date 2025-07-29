@@ -6,8 +6,8 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px) saturate(70%);
   z-index: -1;
 }
 
@@ -50,10 +50,9 @@ body {
 }
 
 h1, h2 {
-  text-align: center;
-  font-family: 'Kanit', sans-serif;
-  font-weight: 400;
-  color: var(--heading-color);
+  font-size: 1.4em;
+  margin-top: 0;
+  font-style: italic;
 }
 
 h1 {
@@ -69,14 +68,19 @@ h1::after {
   content: " →";
   color: var(--accent);
   font-weight: 400;
-  transition: transform 0.3s ease;
+  opacity: 0.8;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+h1:hover::after {
+  transform: translateX(4px);
+  opacity: 1;
 }
 h1:hover::after {
   transform: translateX(4px);
 }
 
 h2 {
-  font-size: 1.2em;
+  font-size: 1.4em;
   margin-top: 0;
   font-style: italic;
 }
@@ -212,9 +216,10 @@ textarea#accessibility-other-text {
 }
 
   h2 {
-    font-size: 1em;
-    margin-top: -8px;
-  }
+  font-size: 1.4em;
+  margin-top: 0;
+  font-style: italic;
+}
   
   .logo-image {
     width: 48px;
@@ -277,4 +282,13 @@ textarea#accessibility-other-text {
     box-sizing: border-box;
   }
 }
+input, select, textarea {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+input:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 6px rgba(160, 208, 128, 0.5);
+  border-color: #a0d080;
+}
+
     
