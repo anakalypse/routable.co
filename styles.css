@@ -1,4 +1,4 @@
-/* Routable Form Styles - Updated */
+    /* Routable Form Styles - Updated */
 
 :root {
   --primary-bg: rgba(255, 255, 255, 0.85);
@@ -8,7 +8,9 @@
   --error: red;
   --success: green;
   --helper-text: #666;
-  --overlay-bg: rgba(255, 255, 255, 0.96);
+  --overlay-bg: rgba(20, 20, 20, 0.7);
+  --text-color: #f2f2f2;
+  --heading-color: #ffffff;
   --form-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
   --text-color: #1f1f1f;
   --heading-color: #111;
@@ -44,19 +46,22 @@ h1, h2 {
 }
 
 h1 {
-  font-family: 'Rubik', sans-serif;
-  font-size: 2.4em;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: #1a1a1a;
-  margin-bottom: 0.2em;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  font-size: 2.6em;
+  font-weight: 600;
+  color: var(--heading-color);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 h1::after {
   content: " →";
   color: var(--accent);
   font-weight: 400;
+  transition: transform 0.3s ease;
+}
+h1:hover::after {
+  transform: translateX(4px);
 }
 
 h2 {
@@ -187,9 +192,13 @@ textarea#accessibility-other-text {
 
 @media (max-width: 600px) {
   h1 {
-    font-size: 1.6em;
-    margin-bottom: 0.4em;
-  }
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+  font-size: 2.6em;
+  font-weight: 600;
+  color: var(--heading-color);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
 
   h2 {
     font-size: 1em;
@@ -257,3 +266,20 @@ textarea#accessibility-other-text {
     box-sizing: border-box;
   }
 }
+input,
+select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #222;
+}
+
+button {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+    
