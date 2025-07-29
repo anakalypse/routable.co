@@ -5,6 +5,69 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiYW5ha2FseXBzZSIsImEiOiJjbTlrdGEzdXYwdGY0MmxwbjEzN2dzMm0zIn0.BvsUMTwPUGngjhTb9fkazA';
 
+const MAX_FREE_TRIPS = 3;
+
+// Show modal
+function showUpgradeModal(message) {
+  const modal = document.getElementById('upgrade-modal');
+  const messageEl = document.getElementById('upgrade-message');
+  messageEl.textContent = message;
+  modal.style.display = 'flex';
+
+  document.getElementById('close-modal').onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  document.getElementById('subscribe-2').onclick = () => {
+    window.location.href = '/subscriptions?plan=2';
+  };
+
+  document.getElementById('subscribe-5').onclick = () => {
+    window.location.href = '/subscriptions?plan=5';
+  };
+
+  // Close modal if clicking outside content
+  modal.onclick = (e) => {
+    if (e.target === modal) modal.style.display = 'none';
+  };
+}
+
+// Check subscription tier and show upgrade options
+async function checkAndPromptUpgrade() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('subscription_tier')
+    .eq('id', user.id)
+    .single();
+
+  const tier = profile?.subscription_tier || 'free';
+
+  if (tier === 'free') {
+    showUpgradeModal("You've reached your free trip limit. Upgrade to $2/month for 15 trips or $5/month for unlimited.");
+  } else if (tier === 'tier_2') {
+    showUpgradeModal("You've reached your 15 trips/month limit. Upgrade to $5/month for unlimited access.");
+  }
+}
+
+// Check trip limit
+async function canSubmitTrip() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    let guestTrips = parseInt(localStorage.getItem('guestTrips') || '0');
+    if (guestTrips >= MAX_FREE_TRIPS) {
+      alert("You've reached your free trip limit. Please log in or subscribe.");
+      return false;
+    }
+    localStorage.setItem('guestTrips', guestTrips + 1);
+  }
+  return true;
+}
+
+// Address autosuggest
 async function fetchSuggestions(query) {
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&types=address&limit=25&country=US&language=en&access_token=${MAPBOX_TOKEN}`;
   try {
@@ -69,23 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const allowed = await canSubmitTrip();
+    if (!allowed) {
+      await checkAndPromptUpgrade();
+      return;
+    }
+
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-
-    data.budget_flexible = document.getElementById('budget-flexible').checked;
-
-    const accessibility = [];
-    form.querySelectorAll('input[name="accessibility"]:checked').forEach(cb => accessibility.push(cb.value));
-    data.accessibility = accessibility.length ? accessibility : null;
-
-    const { error } = await supabase.from('requests').insert([data]);
-    if (error) {
-      messageDiv.textContent = 'Submission failed. Please try again later.';
-      messageDiv.className = 'message error';
-    } else {
-      messageDiv.textContent = 'Your request was sent successfully!';
-      messageDiv.className = 'message success';
-      form.reset();
-    }
-  });
-});
