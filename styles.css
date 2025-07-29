@@ -1,4 +1,17 @@
-    /* Routable Form Styles - Updated */
+    
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: -1;
+}
+
+/* Routable Form Styles - Updated */
 
 :root {
   --primary-bg: rgba(255, 255, 255, 0.85);
@@ -8,9 +21,7 @@
   --error: red;
   --success: green;
   --helper-text: #666;
-  --overlay-bg: rgba(20, 20, 20, 0.7);
-  --text-color: #f2f2f2;
-  --heading-color: #ffffff;
+  --overlay-bg: rgba(255, 255, 255, 0.96);
   --form-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
   --text-color: #1f1f1f;
   --heading-color: #111;
@@ -266,20 +277,4 @@ textarea#accessibility-other-text {
     box-sizing: border-box;
   }
 }
-input,
-select,
-textarea {
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #222;
-}
-
-button {
-  background-color: var(--accent);
-  color: #fff;
-}
-
-button:hover {
-  background-color: var(--accent-hover);
-}
-
     
