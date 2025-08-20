@@ -1,105 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Routable</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Routable | Find Your Way</title>
+  <meta name="description" content="Custom, human-curated transit itineraries for tricky trips. There is a way—let’s find it." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="overlay">
+    <!-- Hero -->
     <h1>Routable</h1>
-    <h2>There <em>is</em> a way. Let’s find it.</h2>
-    <p style="text-align: center; margin-top: -12px;">Some routes take more than a search engine to plan. Share what you know — and we’ll do the rest.</p>
-    <form id="routable-form">
-      <div class="input-group">
-        <label for="start-address">Starting Address</label>
-        <input type="text" id="start-address" name="start_address" class="address-box" required>
-        <div id="start-suggestions" class="suggestion-box"></div>
+    <p class="tagline">There <em>is</em> a way. Let’s find it.</p>
+    <p class="intro muted">
+      Some routes take more than a search engine to plan. Share what you know — and we’ll do the rest.
+    </p>
+
+    <!-- Form -->
+    <form id="request-form" onsubmit="return validateForm(event);" novalidate>
+      <!-- Starting Address -->
+      <label for="start-address">Starting Address <span aria-hidden="true">*</span></label>
+      <input type="text" id="start-address" name="startAddress" placeholder="123 Main St"
+             autocomplete="address-line1" required />
+
+      <!-- Destination Address -->
+      <label for="destination-address">Destination Address <span aria-hidden="true">*</span></label>
+      <input type="text" id="destination-address" name="destinationAddress" placeholder="456 Oak Ave"
+             autocomplete="address-line1" required />
+
+      <!-- Trip Type -->
+      <div class="radio-group" role="radiogroup" aria-label="Trip Type">
+        <label class="radio"><input type="radio" name="tripType" value="oneway" required /> One-way</label>
+        <label class="radio"><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
       </div>
-      <div class="input-group">
-        <label for="destination-address">Destination Address</label>
-        <input type="text" id="destination-address" name="destination_address" class="address-box" required>
-        <div id="destination-suggestions" class="suggestion-box"></div>
+
+      <!-- Departure Time -->
+      <label for="depart-pref">Departure Time</label>
+      <div class="time-range-row">
+        <select id="depart-pref" name="departPref" aria-label="Departure preference">
+          <option value="leave">Leave at</option>
+          <option value="arrive">Arrive by</option>
+        </select>
+        <input type="time" id="depart-time" name="departTime" aria-label="Departure time" />
       </div>
-      <div class="input-group">
-        <label>Trip Type</label>
-        <div class="radio-group">
-          <label><input type="radio" name="trip_type" value="oneway"> One-way</label>
-          <label><input type="radio" name="trip_type" value="roundtrip" checked> Round-trip</label>
-        </div>
+      <label class="checkbox"><input type="checkbox" id="depart-any" name="departAny" /> No preference</label>
+
+      <!-- Return Time (for round-trip, your JS can enable/disable) -->
+      <label for="return-pref">Return Time</label>
+      <div class="time-range-row">
+        <select id="return-pref" name="returnPref" aria-label="Return preference">
+          <option value="leave">Leave at</option>
+          <option value="arrive">Arrive by</option>
+        </select>
+        <input type="time" id="return-time" name="returnTime" aria-label="Return time" />
       </div>
-      <div class="input-group">
-        <label>Departure Time</label>
-        <div class="time-range-row">
-          <select name="start_time_type">
-            <option value="leave">Leave at</option>
-            <option value="arrive">Arrive by</option>
-            <option value="last">Last available</option>
-          </select>
-          <input type="time" id="start_time" name="start_time">
-          <label class="inline-checkbox"><input type="checkbox" name="start_time_none"> No preference</label>
-        </div>
+      <label class="checkbox"><input type="checkbox" id="return-any" name="returnAny" /> No preference</label>
+
+      <!-- Accessibility / Accommodations -->
+      <div class="checkbox-group" aria-label="Accessibility and Accommodations">
+        <label class="checkbox"><input type="checkbox" name="accNoStairs" /> Avoid stairs or steep hills</label>
+        <label class="checkbox"><input type="checkbox" name="accServiceAnimal" /> Accommodates service animals</label>
+        <label class="checkbox"><input type="checkbox" name="accFewerTransfers" /> Prefer fewer transfers</label>
+        <label class="checkbox"><input type="checkbox" name="accShortWaits" /> Avoid long wait times</label>
+        <label class="checkbox"><input type="checkbox" name="accAvoidCrowds" /> Avoid busy routes or crowds</label>
+        <label class="checkbox"><input type="checkbox" name="accMobilityAid" /> Use of mobility aid (e.g., wheelchair, walker, cane)</label>
+        <label class="checkbox"><input type="checkbox" id="accOther" name="accOther" /> Other (explain below)</label>
       </div>
-      <div class="input-group" id="return-time-group">
-        <label>Return Time</label>
-        <div class="time-range-row">
-          <select name="return_time_type">
-            <option value="leave">Leave at</option>
-            <option value="arrive">Arrive by</option>
-            <option value="last">Last available</option>
-          </select>
-          <input type="time" id="return_time" name="return_time">
-          <label class="inline-checkbox"><input type="checkbox" name="return_time_none"> No preference</label>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>Accessibility / Accommodations</label>
-        <div class="checkbox-group">
-          <label><input type="checkbox" name="accessibility" value="stairs"> Avoid stairs or steep hills</label>
-          <label><input type="checkbox" name="accessibility" value="service-animal"> Accommodates service animals</label>
-          <label><input type="checkbox" name="accessibility" value="fewer-transfers"> Prefer fewer transfers</label>
-          <label><input type="checkbox" name="accessibility" value="avoid-waits"> Avoid long wait times</label>
-          <label><input type="checkbox" name="accessibility" value="avoid-crowds"> Avoid busy routes or crowds</label>
-          <label><input type="checkbox" name="accessibility" value="mobility-aid"> Use of mobility aid (e.g., wheelchair, walker, cane)</label>
-          <label><input type="checkbox" name="accessibility" value="other" id="accessibility-other"> Other</label>
-          <textarea id="accessibility-other-text" name="accessibility_other_text" placeholder="Please specify..."></textarea>
-        </div>
-      </div>
-      <div class="input-group">
-        <label for="budget_max">Max Budget (USD)</label>
-        <div class="time-range-row">
-          <input type="number" id="budget_max" name="budget_max">
-          <label class="inline-checkbox"><input type="checkbox" id="budget-flexible"> No preference</label>
-        </div>
-      </div>
-      <div class="input-group">
-        <label for="notes">Other Specifications</label>
-        <textarea id="notes" name="notes"></textarea>
-      </div>
-      <div class="input-group">
-        <label>Is this an urgent route request?</label>
-        <div class="radio-group urgency-options">
-          <label><input type="radio" name="urgent" value="yes"> Yes (turnaround within 12 hours for an additional fee; restrictions may apply)</label>
-          <label><input type="radio" name="urgent" value="no"> No (typical turnaround is 24–48 hours depending on trip complexity)</label>
-        </div>
-      </div>
+
+      <label for="accessibility-other-text" class="visually-hidden">Accessibility notes</label>
+      <textarea id="accessibility-other-text" name="accessNotes" rows="2"
+                placeholder="(e.g., wide doors needed, elevator access required, limited transfer time)"></textarea>
+
+      <!-- Notes & Contact -->
+      <label for="otherNotes">Other Notes or Preferences</label>
+      <textarea id="otherNotes" name="otherNotes" rows="3"
+                placeholder="(e.g., traveling with children, safety concerns, avoid bridges)"></textarea>
+
       <div class="name-email-row">
-        <div class="input-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
+        <div>
+          <label for="name">Your Name <span aria-hidden="true">*</span></label>
+          <input type="text" id="name" name="name" placeholder="First name or nickname"
+                 autocomplete="given-name" required />
         </div>
-        <div class="input-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+        <div>
+          <label for="contact">Your Email <span aria-hidden="true">*</span></label>
+          <input type="email" id="contact" name="email" placeholder="you@example.com"
+                 autocomplete="email" required />
         </div>
       </div>
+
+      <!-- Submit -->
       <button type="submit">Send Request</button>
-      <div id="form-message" class="message"></div>
+
+      <!-- Summary Preview -->
+      <section class="summary-card" aria-labelledby="summary-heading">
+        <h3 id="summary-heading" class="summary-title">Summary Preview</h3>
+        <p id="summary-preview" class="summary-body" aria-live="polite"></p>
+      </section>
+
+      <!-- Confirmation (hidden until success) -->
+      <div id="confirmation" class="message" role="status" aria-live="polite" hidden>
+        Thank you! We’ll start working on your route shortly.
+      </div>
+
+      <p class="intro muted" style="margin-top: 6px;">
+        Note: Itineraries are manually curated. Most are delivered within 24 hours, but may take up to 48 hours depending on the complexity of your trip.
+      </p>
     </form>
+
+    <!-- Footer links (optional) -->
+    <footer style="margin-top: 18px;">
+      <a href="#samples">Samples</a>
+      <a href="#about">About</a>
+    </footer>
   </div>
-  <script src="script.js"></script>
+
+  <!-- Upgrade Modal -->
+  <div id="upgrade-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="upgrade-title" aria-describedby="upgrade-message" hidden>
+    <div class="modal-content" role="document">
+      <h3 id="upgrade-title">Upgrade Your Plan</h3>
+      <p id="upgrade-message"></p>
+      <div class="modal-actions">
+        <button id="subscribe-2" class="btn-upgrade" type="button" data-plan="2">$2 / Month (15 trips)</button>
+        <button id="subscribe-5" class="btn-upgrade" type="button" data-plan="5">$5 / Month (Unlimited)</button>
+        <button id="close-modal" class="btn-close" type="button" aria-label="Close upgrade dialog">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="message">JavaScript is required to submit this form. Please enable JavaScript and reload.</div>
+  </noscript>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
