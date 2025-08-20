@@ -2,129 +2,247 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Routable | Find Your Way</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,400&display=swap" rel="stylesheet">
+  <meta name="description" content="Custom, human-curated transit itineraries for tricky trips. There is a way—let’s find it." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-<div class="overlay">
-  <h1 style="margin-bottom: 0.2em;">Routable</h1>
-  <h2 style="margin-top: 0; margin-bottom: 1em;">There <em>is</em> a way. Let’s find it.</h2>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <form onsubmit="return validateForm(event);">
-    <p style="text-align: center; font-style: italic; color: #4b6043; font-size: 1em; margin-bottom: 2em;">
-      Some routes take more than a search engine to plan. Share what you know — and we’ll do the rest.
-    </p>
-    <label for="start-address">Starting Address <span style='color: red'>*</span></label>
-<div class="input-row">
-  <input type="text" id="start-address" placeholder="Street Address" style="flex: 2;" required />
-</div>
-<div class="input-row">
-  <input type="text" id="start-city" placeholder="City" style="flex: 1;" required />
-  <input type="text" id="start-state" placeholder="State" style="width: 60px;" required />
-  <input type="text" id="start-zip" placeholder="ZIP" style="width: 80px;" required />
-</div>
-<div class="input-row">
-  <label style="font-weight: normal;"><input type="checkbox" id="start-uncertain" style="margin-right: 6px;" /> Unknown</label>
-  <input type="text" id="start-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
-</div>
+  <header class="site-header" role="banner">
+    <div class="overlay">
+      <h1 class="title">Routable</h1>
+      <p class="tagline">There <em>is</em> a way. Let’s find it.</p>
+    </div>
+  </header>
 
-<label>Preferred Time Range (Start) <span style='color: red'>*</span></label>
-<div class="input-row">
-  <input type="time" placeholder="From" data-group="start-time" required />
-  <input type="time" placeholder="To" data-group="start-time" required />
-  <label style="font-weight: normal;"><input type="checkbox" id="start-flexible" /> Flexible</label>
-</div>
+  <main id="main" class="container" role="main">
+    <form id="request-form" onsubmit="return validateForm(event);" novalidate>
+      <p class="intro muted">
+        Some routes take more than a search engine to plan. Share what you know — and we’ll do the rest.
+      </p>
 
-<label for="destination-address">Destination Address <span style='color: red'>*</span></label>
-<div class="input-row">
-  <input type="text" id="destination-address" placeholder="Street Address" style="flex: 2;" required />
-</div>
-<div class="input-row">
-  <input type="text" id="destination-city" placeholder="City" style="flex: 1;" required />
-  <input type="text" id="destination-state" placeholder="State" style="width: 60px;" required />
-  <input type="text" id="destination-zip" placeholder="ZIP" style="width: 80px;" required />
-</div>
-<div class="input-row">
-  <label style="font-weight: normal;"><input type="checkbox" id="destination-uncertain" style="margin-right: 6px;" /> Unknown</label>
-  <input type="text" id="destination-uncertain-notes" placeholder="(e.g. cross streets, nearby landmark)" disabled style="flex: 2; opacity: 0.5;" />
-</div>
+      <!-- Start -->
+      <section aria-labelledby="start-heading">
+        <h2 id="start-heading" class="section-title">Starting Point</h2>
 
-<label>Preferred Time Range (Arrival) <span style='color: red'>*</span></label>
-<div class="input-row">
-  <input type="time" placeholder="From" data-group="arrival-time" required />
-  <input type="time" placeholder="To" data-group="arrival-time" required />
-  <label style="font-weight: normal;"><input type="checkbox" id="destination-flexible" /> Flexible</label>
-</div>
+        <label for="start-address">Street Address <span class="req">*</span></label>
+        <div class="input-row">
+          <input type="text" id="start-address" name="startAddress" placeholder="123 Main St"
+                 autocomplete="address-line1"
+                 required />
+        </div>
 
-<label>Trip Type <span style='color: red'>*</span></label>
-<div class="radio-group" style="font-weight: normal; font-family: inherit;">
-  <label style="font-weight: normal;"><input type="radio" name="tripType" value="oneway" required /> One-way</label>
-  <label style="font-weight: normal;"><input type="radio" name="tripType" value="roundtrip" /> Round-trip</label>
-</div>
+        <div class="input-row">
+          <input type="text" id="start-city" name="startCity" placeholder="City"
+                 autocomplete="address-level2" required />
+          <input type="text" id="start-state" name="startState" placeholder="State"
+                 autocomplete="address-level1" inputmode="text" pattern="[A-Za-z]{2}" maxlength="2"
+                 aria-describedby="state-hint" required />
+          <input type="text" id="start-zip" name="startZip" placeholder="ZIP"
+                 autocomplete="postal-code" inputmode="numeric"
+                 pattern="\\d{5}(-\\d{4})?" maxlength="10" required />
+        </div>
+        <p id="state-hint" class="hint">Use 2‑letter code (e.g., WA).</p>
 
-<div class="section-title">Mobility & Accessibility</div>
+        <div class="input-row">
+          <label class="checkbox">
+            <input type="checkbox" id="start-uncertain" name="startUncertain" />
+            Unknown
+          </label>
+          <input type="text" id="start-uncertain-notes" name="startUncertainNotes"
+                 placeholder="Cross streets or landmark"
+                 disabled aria-disabled="true" />
+        </div>
 
-<label>Comfortable Walking Distance <span style='color: red'>*</span></label>
-<div class="input-row">
-  <input type="text" id="walking-distance" placeholder="(e.g. 1/4 mile, up to 10 minutes, etc.)" style="width: 250px;" required />
-  <label style="font-weight: normal;"><input type="checkbox" id="walking-flexible" /> Flexible</label>
-</div>
+        <fieldset class="time-range">
+          <legend>Preferred Time Range (Start) <span class="req">*</span></legend>
+          <div class="input-row">
+            <label>
+              <span class="visually-hidden">From</span>
+              <input type="time" id="start-time-from" name="startTimeFrom" required />
+            </label>
+            <label>
+              <span class="visually-hidden">To</span>
+              <input type="time" id="start-time-to" name="startTimeTo" required />
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="start-flexible" name="startFlexible" />
+              Flexible
+            </label>
+          </div>
+        </fieldset>
+      </section>
 
-<label>Accessibility / Accommodations</label>
-<div class="checkbox-group" style="font-weight: normal; font-family: inherit;">
-  <label style="font-weight: normal;"><input type="checkbox" /> Wheelchair accessible only</label>
-  <label style="font-weight: normal;"><input type="checkbox" /> Avoid stairs or steep hills</label>
-  <label style="font-weight: normal;"><input type="checkbox" /> Prefer indoor waiting areas</label>
-  <label style="font-weight: normal;"><input type="checkbox" /> I travel with a service animal</label>
-  <label style="font-weight: normal;"><input type="checkbox" /> Other (explain below)</label>
-</div>
-<textarea rows="2" placeholder="(e.g. wide doors needed, limited time to transfer)"></textarea>
+      <!-- Destination -->
+      <section aria-labelledby="dest-heading">
+        <h2 id="dest-heading" class="section-title">Destination</h2>
 
-<label>Transit Budget (USD) <span style='color: red'>*</span></label>
-<div class="input-row">
-  <input type="number" id="budget-min" placeholder="Min ($)" min="0" max="100" step="1" required />
-  <input type="number" id="budget-max" placeholder="Max ($)" min="0" max="100" step="1" required />
-  <label style="font-weight: normal;"><input type="checkbox" id="budget-flexible" /> Flexible</label>
-</div>
+        <label for="destination-address">Street Address <span class="req">*</span></label>
+        <div class="input-row">
+          <input type="text" id="destination-address" name="destinationAddress" placeholder="456 Oak Ave"
+                 autocomplete="address-line1" required />
+        </div>
 
-<label for="otherNotes">Other Notes or Preferences</label>
-<textarea id="otherNotes" rows="3" placeholder="(e.g. avoid bridges, traveling with children, safety concerns)"></textarea>
+        <div class="input-row">
+          <input type="text" id="destination-city" name="destinationCity" placeholder="City"
+                 autocomplete="address-level2" required />
+          <input type="text" id="destination-state" name="destinationState" placeholder="State"
+                 autocomplete="address-level1" inputmode="text" pattern="[A-Za-z]{2}" maxlength="2" required />
+          <input type="text" id="destination-zip" name="destinationZip" placeholder="ZIP"
+                 autocomplete="postal-code" inputmode="numeric"
+                 pattern="\\d{5}(-\\d{4})?" maxlength="10" required />
+        </div>
 
-<label for="name">Your Name <span style='color: red'>*</span></label>
-<input type="text" id="name" placeholder="First name or nickname" aria-label="Your Name" required />
+        <div class="input-row">
+          <label class="checkbox">
+            <input type="checkbox" id="destination-uncertain" name="destinationUncertain" />
+            Unknown
+          </label>
+          <input type="text" id="destination-uncertain-notes" name="destinationUncertainNotes"
+                 placeholder="Cross streets or landmark"
+                 disabled aria-disabled="true" />
+        </div>
 
-<label for="contact">Your Email <span style='color: red'>*</span></label>
-<input type="email" id="contact" placeholder="example@email.com" required />
+        <fieldset class="time-range">
+          <legend>Preferred Time Range (Arrival) <span class="req">*</span></legend>
+          <div class="input-row">
+            <label>
+              <span class="visually-hidden">From</span>
+              <input type="time" id="arrival-time-from" name="arrivalTimeFrom" required />
+            </label>
+            <label>
+              <span class="visually-hidden">To</span>
+              <input type="time" id="arrival-time-to" name="arrivalTimeTo" required />
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="destination-flexible" name="arrivalFlexible" />
+              Flexible
+            </label>
+          </div>
+        </fieldset>
 
-<button type="submit" style="margin-top: 20px;">Send Request</button>
-<div style="margin-top: 30px; padding: 10px; background-color: rgba(255,255,255,0.2); border-radius: 8px; font-size: 0.95em;">
-  <strong>Summary Preview:</strong>
-  <p id="summary-preview" style="margin: 0.5em 0 0 0; color: #333;"></p>
-</div>
-  </form>
+        <fieldset class="radio-group">
+          <legend>Trip Type <span class="req">*</span></legend>
+          <label class="radio"><input type="radio" name="tripType" value="oneway" required /> One‑way</label>
+          <label class="radio"><input type="radio" name="tripType" value="roundtrip" /> Round‑trip</label>
+        </fieldset>
+      </section>
 
-  <div id="confirmation">Thank you! We’ll start working on your route shortly.</div>
-  <p style="margin-top: 30px; font-size: 0.9em; color: #555; text-align: center;">
-    Note: Itineraries are manually curated. Most are delivered within 24 hours, but may take up to 48 hours depending on the complexity of your trip.
-  </p>
-</div>
+      <!-- Mobility & Accessibility -->
+      <section aria-labelledby="access-heading">
+        <h2 id="access-heading" class="section-title">Mobility & Accessibility</h2>
 
-<footer>
-  <a href="#samples" style="color: #2f2f2f; text-decoration: none; font-weight: 500;">Samples</a>
-  <a href="#about" style="color: #2f2f2f; text-decoration: none; font-weight: 500;">About</a>
-</footer>
+        <label for="walking-distance">Comfortable Walking Distance <span class="req">*</span></label>
+        <div class="input-row">
+          <input type="text" id="walking-distance" name="walkingDistance"
+                 placeholder="e.g., 1/4 mile or 10 minutes"
+                 required />
+          <label class="checkbox">
+            <input type="checkbox" id="walking-flexible" name="walkingFlexible" />
+            Flexible
+          </label>
+        </div>
 
-<div id="upgrade-modal" class="modal">
-  <div class="modal-content">
-    <h3>Upgrade Your Plan</h3>
-    <p id="upgrade-message"></p>
-    <div class="modal-actions">
-      <button id="subscribe-2" class="btn-upgrade">$2 / Month (15 trips)</button>
-      <button id="subscribe-5" class="btn-upgrade">$5 / Month (Unlimited)</button>
-      <button id="close-modal" class="btn-close">Close</button>
+        <fieldset class="checkbox-group">
+          <legend>Accessibility / Accommodations</legend>
+          <label class="checkbox"><input type="checkbox" name="accWheelchair" /> Wheelchair accessible only</label>
+          <label class="checkbox"><input type="checkbox" name="accNoStairs" /> Avoid stairs or steep hills</label>
+          <label class="checkbox"><input type="checkbox" name="accIndoorWait" /> Prefer indoor waiting areas</label>
+          <label class="checkbox"><input type="checkbox" name="accServiceAnimal" /> I travel with a service animal</label>
+          <label class="checkbox"><input type="checkbox" name="accOther" /> Other (explain below)</label>
+        </fieldset>
+
+        <label for="access-notes" class="visually-hidden">Accessibility notes</label>
+        <textarea id="access-notes" name="accessNotes" rows="2"
+                  placeholder="(e.g., wide doors needed, limited transfer time)"></textarea>
+      </section>
+
+      <!-- Budget -->
+      <section aria-labelledby="budget-heading">
+        <h2 id="budget-heading" class="section-title">Budget</h2>
+
+        <label>Transit Budget (USD) <span class="req">*</span></label>
+        <div class="input-row">
+          <input type="number" id="budget-min" name="budgetMin" placeholder="Min ($)"
+                 min="0" max="1000" step="1" inputmode="numeric" required />
+          <input type="number" id="budget-max" name="budgetMax" placeholder="Max ($)"
+                 min="0" max="1000" step="1" inputmode="numeric" required />
+          <label class="checkbox">
+            <input type="checkbox" id="budget-flexible" name="budgetFlexible" />
+            Flexible
+          </label>
+        </div>
+      </section>
+
+      <!-- Notes & Contact -->
+      <section aria-labelledby="notes-heading">
+        <h2 id="notes-heading" class="section-title">Notes & Contact</h2>
+
+        <label for="otherNotes">Other Notes or Preferences</label>
+        <textarea id="otherNotes" name="otherNotes" rows="3"
+                  placeholder="(e.g., avoid bridges, traveling with children, safety concerns)"></textarea>
+
+        <div class="grid-2">
+          <div>
+            <label for="name">Your Name <span class="req">*</span></label>
+            <input type="text" id="name" name="name" placeholder="First name or nickname"
+                   autocomplete="given-name" required />
+          </div>
+          <div>
+            <label for="contact">Your Email <span class="req">*</span></label>
+            <input type="email" id="contact" name="email" placeholder="you@example.com"
+                   autocomplete="email" required />
+          </div>
+        </div>
+      </section>
+
+      <button type="submit" class="btn-primary">Send Request</button>
+
+      <section class="summary-card" aria-labelledby="summary-heading">
+        <h3 id="summary-heading" class="summary-title">Summary Preview</h3>
+        <p id="summary-preview" class="summary-body" aria-live="polite"></p>
+      </section>
+
+      <div id="confirmation" class="confirmation" role="status" aria-live="polite" hidden>
+        Thank you! We’ll start working on your route shortly.
+      </div>
+
+      <p class="turnaround-note">
+        Note: Itineraries are manually curated. Most are delivered within 24 hours, but may take up to 48 hours depending on the complexity of your trip.
+      </p>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <nav aria-label="Footer">
+      <a href="#samples" class="footer-link">Samples</a>
+      <a href="#about" class="footer-link">About</a>
+    </nav>
+  </footer>
+
+  <!-- Upgrade Modal -->
+  <div id="upgrade-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="upgrade-title" aria-describedby="upgrade-message" hidden>
+    <div class="modal-content" role="document">
+      <h3 id="upgrade-title">Upgrade Your Plan</h3>
+      <p id="upgrade-message"></p>
+      <div class="modal-actions">
+        <button id="subscribe-2" class="btn-upgrade" type="button" data-plan="2">$2 / Month (15 trips)</button>
+        <button id="subscribe-5" class="btn-upgrade" type="button" data-plan="5">$5 / Month (Unlimited)</button>
+        <button id="close-modal" class="btn-close" type="button" aria-label="Close upgrade dialog">Close</button>
+      </div>
     </div>
   </div>
-</div>
-  
+
+  <noscript>
+    <div class="noscript">JavaScript is required to submit this form. Please enable JavaScript and reload.</div>
+  </noscript>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
