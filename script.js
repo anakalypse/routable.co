@@ -113,6 +113,18 @@ async function canSubmitTrip() {
 }
 
 // ---- Address Autosuggest: Mapbox + fallback to Nominatim ----
+(async () => {
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/test.json?limit=1&access_token=${MAPBOX_TOKEN}`;
+  try {
+    const r = await fetch(url);
+    console.log('Mapbox status:', r.status, r.statusText);
+    if (r.status === 200) console.log('✅ Token works.');
+    else console.warn('⚠️ Mapbox error. Check account/token.');
+  } catch (e) {
+    console.error('❌ Network/blocked:', e);
+  }
+})();
+
 async function mapboxSuggest(query) {
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?autocomplete=true&types=address&limit=25&country=US&language=en&access_token=${MAPBOX_TOKEN}`;
   const res = await fetch(url);
