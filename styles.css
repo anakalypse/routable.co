@@ -283,7 +283,7 @@ footer a:hover { text-decoration: underline; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .overlay {
-    max-width: clamp(480px, 68vw, 620px);
+    max-width: clamp(500px, 44vw, 620px);
     padding: 24px 22px 28px;
   }
 }
