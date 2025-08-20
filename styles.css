@@ -19,10 +19,7 @@
 
 /* ---------- Global / background ---------- */
 * { box-sizing: border-box; }
-
-html, body {
-  height: 100%;
-}
+html, body { height: 100%; }
 
 body {
   margin: 0;
@@ -70,7 +67,6 @@ h1 {
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,0.35);
 }
-
 h1::after {
   content: " →";
   color: var(--accent);
@@ -98,15 +94,32 @@ h2,
   text-align: center;
 }
 
-/* ---------- Form layout ---------- */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+/* Visually hidden utility (for accessible labels) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap; border: 0; padding: 0; margin: -1px;
 }
 
+/* ---------- Status banner (service fallbacks) ---------- */
+#status-banner {
+  margin: 10px 0 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255,255,200,0.92);
+  border: 1px solid #e0d977;
+  color: #5a5400;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* ---------- Form layout ---------- */
+form { display: flex; flex-direction: column; gap: 18px; }
+
 label {
-  font-weight: 500;      /* calm, readable */
+  font-weight: 500;     /* calm, readable */
   display: block;
   margin-bottom: 6px;
 }
@@ -116,19 +129,7 @@ label {
 .radio-group label { font-weight: 500; }
 
 /* Controls */
-.input-wrap { position: relative; }
-.suggestion-box {
-  position: absolute;
-  left: 0;
-  top: calc(100% + 6px);
-  width: 100%;
-  z-index: 1000;
-}
-
-input,
-select,
-textarea,
-button {
+input, select, textarea, button {
   font-family: inherit;
   font-size: 1rem;
   padding: 12px;
@@ -139,44 +140,27 @@ button {
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
+input::placeholder, textarea::placeholder { color: #9aa1a6; }
 
-input::placeholder,
-textarea::placeholder { color: #9aa1a6; }
-
-input:focus,
-textarea:focus,
-select:focus {
+input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: #9aca7a;
   box-shadow: 0 0 0 3px rgba(160,208,128,0.35);
 }
+:focus-visible { outline: none; }
 
+/* Textareas */
 textarea { resize: vertical; min-height: 88px; }
 
 /* Inline checkboxes / radios */
-input[type="checkbox"],
-input[type="radio"] {
-  width: auto;
-  margin-right: 8px;
-}
+input[type="checkbox"], input[type="radio"] { width: auto; margin-right: 8px; }
 
 /* Grouping */
-.checkbox-group,
-.radio-group {
-  display: grid;
-  gap: 8px;
-}
-
-.checkbox,
-.radio {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.checkbox-group, .radio-group { display: grid; gap: 8px; }
+.checkbox, .radio { display: flex; align-items: center; gap: 8px; }
 
 /* Two-up rows (times, name/email) */
-.time-range-row,
-.name-email-row {
+.time-range-row, .name-email-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
@@ -197,23 +181,25 @@ button {
 button:hover { background-color: var(--accent-hover); }
 
 /* Message area */
-.message {
-  margin-top: 10px;
-  font-weight: 700;
-  text-align: center;
-}
+.message { margin-top: 10px; font-weight: 700; text-align: center; }
 
 /* ---------- Autocomplete suggestions ---------- */
+/* The JS wraps inputs in .input-wrap; anchor dropdown to that */
+.input-wrap { position: relative; }
+
 .suggestion-box {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  width: 100%;
+  z-index: 1000;
+  display: none; /* shown via JS */
   background: #fff;
   border: 1px solid #d6d9de;
-  position: absolute;
-  z-index: 1000;
-  max-height: 220px;
-  overflow-y: auto;
   border-radius: 10px;
   box-shadow: 0 8px 22px rgba(0,0,0,0.15);
-  max-width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
 }
 .suggestion-item { padding: 12px; cursor: pointer; }
 .suggestion-item:hover { background-color: #f3f6f8; }
@@ -226,39 +212,27 @@ button:hover { background-color: var(--accent-hover); }
   border: 1px solid #e7eaee;
   border-radius: 12px;
 }
-.summary-title {
-  margin: 0 0 6px;
-  font-size: 0.95rem;
-  font-weight: 700;
-}
+.summary-title { margin: 0 0 6px; font-size: 0.95rem; font-weight: 700; }
 .summary-body { margin: 0; color: #333; }
 
-/* ---------- Footer links (if used) ---------- */
-footer {
-  text-align: center;
-  padding: 24px 16px 48px;
-}
+/* ---------- Footer links ---------- */
+footer { text-align: center; padding: 18px 16px 6px; }
 footer a {
-  color: #2f2f2f;
-  text-decoration: none;
-  font-weight: 600;
-  margin: 0 12px;
+  color: #2f2f2f; text-decoration: none; font-weight: 600; margin: 0 12px;
 }
 footer a:hover { text-decoration: underline; }
 
 /* ---------- Upgrade Modal ---------- */
 .modal {
   display: none;                 /* toggled via JS */
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(0,0,0,0.58);
   backdrop-filter: blur(4px);
   z-index: 1000;
   place-items: center;           /* grid centering */
 }
 .modal-content {
-  background: #fff;
-  color: #222;
+  background: #fff; color: #222;
   padding: 22px;
   border-radius: 14px;
   max-width: 420px;
@@ -266,11 +240,7 @@ footer a:hover { text-decoration: underline; }
   text-align: center;
   box-shadow: 0 18px 50px rgba(0,0,0,0.3);
 }
-.modal-actions {
-  margin-top: 14px;
-  display: grid;
-  gap: 10px;
-}
+.modal-actions { margin-top: 14px; display: grid; gap: 10px; }
 .btn-upgrade {
   background-color: var(--accent);
   color: #fff;
@@ -292,7 +262,7 @@ footer a:hover { text-decoration: underline; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .overlay {
-    max-width: clamp(500px, 44vw, 620px);
+    max-width: clamp(520px, 48vw, 640px);
     padding: 24px 22px 28px;
   }
 }
@@ -305,9 +275,11 @@ footer a:hover { text-decoration: underline; }
     border-radius: 18px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.25);
   }
-  .time-range-row,
-  .name-email-row {
-    grid-template-columns: 1fr;  /* stack */
-  }
+  .time-range-row, .name-email-row { grid-template-columns: 1fr; } /* stack */
   button { padding: 11px 20px; }
+}
+
+/* ---------- Motion safety ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
 }
